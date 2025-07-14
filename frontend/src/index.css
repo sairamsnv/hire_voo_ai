@@ -1,0 +1,255 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium KnowHire Design System with Enhanced Glossy Effects */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 216 100% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 216 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Enhanced Blue & White Gradient Colors */
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --gradient-secondary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-premium: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --gradient-luxury: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 216 100% 50%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 216 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: #ffffff;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Enhanced Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 8px 32px rgba(59, 130, 246, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-dark {
+    background: rgba(30, 58, 138, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(30, 58, 138, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Enhanced gradient backgrounds */
+  .gradient-primary {
+    background: var(--gradient-primary);
+    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
+  }
+
+  .gradient-secondary {
+    background: var(--gradient-secondary);
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+  }
+
+  .gradient-premium {
+    background: var(--gradient-premium);
+    box-shadow: 0 10px 40px rgba(226, 232, 240, 0.5);
+  }
+
+  .gradient-luxury {
+    background: var(--gradient-luxury);
+    box-shadow: 0 15px 50px rgba(30, 64, 175, 0.4);
+  }
+
+  /* Premium glossy button effect */
+  .btn-glossy {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 
+      0 10px 40px rgba(37, 99, 235, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-glossy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-glossy:hover::before {
+    left: 100%;
+  }
+
+  .btn-glossy:hover {
+    box-shadow: 
+      0 15px 50px rgba(37, 99, 235, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Enhanced card hover effects */
+  .card-hover {
+    @apply transition-all duration-500 hover:scale-[1.02];
+    transform-style: preserve-3d;
+  }
+
+  .card-hover:hover {
+    box-shadow: 
+      0 25px 80px rgba(59, 130, 246, 0.25),
+      0 10px 40px rgba(59, 130, 246, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  /* Enhanced animated gradient text */
+  .gradient-text {
+    background: linear-gradient(-45deg, #2563eb, #1d4ed8, #3b82f6, #1e40af);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 4s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Enhanced floating animation */
+  .float {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-15px) rotate(1deg); }
+    50% { transform: translateY(-25px) rotate(0deg); }
+    75% { transform: translateY(-10px) rotate(-1deg); }
+  }
+
+  /* Enhanced shimmer effect */
+  .shimmer {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Enhanced premium shadows */
+  .shadow-premium {
+    box-shadow: 
+      0 20px 60px rgba(59, 130, 246, 0.15), 
+      0 8px 25px rgba(59, 130, 246, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-luxury {
+    box-shadow: 
+      0 35px 80px rgba(59, 130, 246, 0.25), 
+      0 15px 35px rgba(59, 130, 246, 0.15),
+      0 8px 20px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* Blue glow effects */
+  .glow-blue {
+    box-shadow: 
+      0 0 20px rgba(59, 130, 246, 0.5),
+      0 0 40px rgba(59, 130, 246, 0.3),
+      0 0 60px rgba(59, 130, 246, 0.1);
+  }
+
+  .glow-blue:hover {
+    box-shadow: 
+      0 0 30px rgba(59, 130, 246, 0.7),
+      0 0 60px rgba(59, 130, 246, 0.4),
+      0 0 90px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Frosted glass navigation */
+  .nav-glass {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+  }
+}
