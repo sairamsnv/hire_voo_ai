@@ -1,23 +1,27 @@
-from django.urls import path, re_path
-from .views import (
-    login_view, logout_view, register_view,
-    get_csrf_token, get_profile_view, check_auth_view,
-    FrontendAppView
-)
 
+from django.urls import path
+from . import views
 app_name = 'accounts'
-
 urlpatterns = [
-    path('api/login/', login_view),
-    path('api/logout/', logout_view),
-    path('api/register/', register_view),
-    path('api/profile/', get_profile_view),
-    path('api/csrf/', get_csrf_token),
-    path('api/check-auth/', check_auth_view),
-   
+    # Authentication endpoints
+    path('api/csrf/', views.get_csrf_token, name='csrf_token'),
+    path('api/login/', views.login_view, name='login'),
+    path('api/logout/', views.logout_view, name='logout'),
+    path('api/register/', views.register_view, name='register'),
+    
+    # Session management
+    path('api/session/', views.session_check_view, name='session_check'),
+    path('api/profile/', views.get_profile_view, name='user_profile'),
+    
+    # Backward compatibility
+    path('api/check-auth/', views.check_auth_view, name='check_auth'),
+    path('api/update_profile/', views.update_profile_view, name='update_profile'),
+    # Frontend routes (catch-all for React Router)
+    path('', views.FrontendAppView.as_view(), name='frontend'),
+    path('<path:path>', views.FrontendAppView.as_view(), name='frontend_path'),
 
-    # ✅ Catch-all React frontend route (should be last)
-    re_path(r'^(?!static/).*$', FrontendAppView.as_view(), name='frontend'),
+    
+#                        ↑ this slash is required
 
 ]
 

@@ -1,29 +1,28 @@
-
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import {
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
+} from '@/components/ui/dialog';
+import {
+  Avatar, AvatarFallback, AvatarImage
+} from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { 
-  User, 
-  Mail, 
-  Calendar, 
-  MapPin, 
-  Briefcase, 
-  Shield, 
-  Crown, 
-  Star,
-  Edit,
-  Phone,
-  Globe,
-  Camera,
-  Settings,
-  Save,
-  X
+import {
+  User, Mail, Calendar, MapPin, Briefcase, Shield,
+  Crown, Star, Edit, Camera, Settings, Save, X, Phone
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+function getCSRFToken() {
+  const name = 'csrftoken';
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+    const [key, value] = cookie.trim().split('=');
+    if (key === name) return value;
+  }
+  return '';
+}
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -31,230 +30,209 @@ interface ProfileModalProps {
 }
 
 const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [formData, setFormData] = useState<any>({});
   const [isEditing, setIsEditing] = useState(false);
-  const [avatarWidth, setAvatarWidth] = useState(120);
-  const [avatarHeight, setAvatarHeight] = useState(120);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  // Mock user data - in real app this would come from authentication/database
-  const userProfile = {
-    name: 'Sayyapu Reddy Sairam',
-    email: 'sayypureddysairam@gmail.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA, USA',
-    joinDate: 'January 15, 2024',
-    lastLogin: 'Today at 2:30 PM',
-    subscriptionPlan: 'Premium Plan',
-    profileCompletion: 85,
-    skills: ['React', 'Node.js', 'TypeScript', 'AWS', 'Python'],
-    jobTitle: 'Senior Software Engineer',
-    experience: '8+ years',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get('/api/profile/', { withCredentials: true });
+        if (res.data?.isAuthenticated) {
+          setUserProfile(res.data.user);
+          setFormData(res.data.user);
+        } else {
+          toast({
+            title: 'Authentication Error',
+            description: 'Please log in to view your profile.',
+            variant: 'destructive'
+          });
+        }
+      } catch {
+        toast({
+          title: 'Fetch Failed',
+          description: 'Unable to load profile.',
+          variant: 'destructive'
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [isOpen]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSaveSettings = () => {
-    setIsEditing(false);
-    // Here you would save the avatar dimensions to your backend/localStorage
+  const handleSave = async () => {
+    try {
+      const res = await axios.put('/api/update_profile/', formData, {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': getCSRFToken(),
+        }
+      });
+      toast({ title: 'Success', description: 'Profile updated.' });
+      setUserProfile(res.data.user);
+      setIsEditing(false);
+    } catch (err) {
+      toast({ title: 'Update Failed', description: 'Could not save changes.', variant: 'destructive' });
+      console.error(err);
+    }
   };
+
+  const avatarURL = `https://api.dicebear.com/8.x/thumbs/svg?seed=${encodeURIComponent(formData.full_name || 'User')}`;
+
+  if (loading || !userProfile) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="glass backdrop-blur-xl border-white/50 shadow-luxury max-w-2xl">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto px-6 py-8 rounded-2xl border shadow-xl bg-white space-y-6">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-900">Profile Details</DialogTitle>
-          <DialogDescription className="text-blue-600/70">
-            Your account information and preferences
-          </DialogDescription>
+          <DialogDescription className="text-blue-600/70">Your account information and preferences</DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
-          {/* Profile Header */}
-          <div className="flex items-center gap-6 p-6 bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-2xl">
-            <div className="relative">
-              <Avatar 
-                className="shadow-luxury ring-4 ring-white/50" 
-                style={{ width: `${avatarWidth}px`, height: `${avatarHeight}px` }}
-              >
-                <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
-                <AvatarFallback className="gradient-primary text-white font-bold text-2xl">
-                  {userProfile.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              <Button
-                size="icon"
-                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full gradient-primary text-white shadow-luxury"
-              >
-                <Camera className="w-4 h-4" />
-              </Button>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold text-blue-900 mb-1">{userProfile.name}</h3>
-              <p className="text-blue-600/70 mb-2">{userProfile.jobTitle}</p>
-              <div className="flex items-center gap-4 mb-3">
-                <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1">
-                  <Crown className="w-4 h-4 mr-1" />
-                  {userProfile.subscriptionPlan}
-                </Badge>
-                <Badge className="bg-green-100 text-green-800 px-3 py-1">
-                  <Shield className="w-4 h-4 mr-1" />
-                  Verified
-                </Badge>
-              </div>
-              <div className="text-sm text-blue-600/70">
-                Profile {userProfile.profileCompletion}% complete
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Button 
-                variant="outline" 
-                className="border-blue-200 text-blue-700 hover:bg-blue-50"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                {isEditing ? <X className="w-4 h-4 mr-2" /> : <Edit className="w-4 h-4 mr-2" />}
-                {isEditing ? 'Cancel' : 'Edit Profile'}
-              </Button>
-              <Button 
-                variant="outline" 
-                size="icon"
-                className="border-blue-200 text-blue-700 hover:bg-blue-50"
-              >
-                <Settings className="w-4 h-4" />
-              </Button>
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="relative">
+            <Avatar className="h-28 w-28 ring-4 ring-white/80 shadow-lg">
+              <AvatarImage src={avatarURL} alt={formData.full_name} />
+              <AvatarFallback className="bg-blue-100 text-blue-900 text-2xl">
+                {formData.full_name?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <Button size="icon" className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-blue-600 text-white shadow">
+              <Camera className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="flex-1">
+            {isEditing ? (
+              <input
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                className="text-2xl font-bold text-blue-900 bg-white border border-blue-200 rounded-md px-3 py-2 w-full"
+              />
+            ) : (
+              <h2 className="text-2xl font-bold text-blue-900">{userProfile.full_name}</h2>
+            )}
+            {isEditing ? (
+              <input
+                name="job_stream"
+                value={formData.job_stream}
+                onChange={handleChange}
+                className="text-blue-600/70 border border-blue-200 rounded-md px-3 py-2 w-full mt-2"
+              />
+            ) : (
+              <p className="text-blue-600/70 mb-2">{userProfile.job_stream || 'N/A'}</p>
+            )}
+            <div className="flex items-center gap-3 flex-wrap">
+              <Badge className="bg-yellow-400 text-black"><Crown className="w-4 h-4 mr-1" /> Premium Plan</Badge>
+              <Badge className="bg-green-100 text-green-800"><Shield className="w-4 h-4 mr-1" /> Verified</Badge>
+              <span className="text-sm text-blue-500">Profile 85% complete</span>
             </div>
           </div>
 
-          {/* Avatar Settings - Only show when editing */}
-          {isEditing && (
-            <Card className="glass border-white/50">
-              <CardContent className="p-6">
-                <h4 className="font-semibold text-blue-900 mb-4 flex items-center">
-                  <Settings className="w-5 h-5 mr-2" />
-                  Avatar Settings
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="avatar-width" className="text-blue-700">Width (px)</Label>
-                    <Input
-                      id="avatar-width"
-                      type="number"
-                      min="50"
-                      max="200"
-                      value={avatarWidth}
-                      onChange={(e) => setAvatarWidth(Number(e.target.value))}
-                      className="border-blue-200"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="avatar-height" className="text-blue-700">Height (px)</Label>
-                    <Input
-                      id="avatar-height"
-                      type="number"
-                      min="50"
-                      max="200"
-                      value={avatarHeight}
-                      onChange={(e) => setAvatarHeight(Number(e.target.value))}
-                      className="border-blue-200"
-                    />
-                  </div>
-                </div>
-                <Button 
-                  className="mt-4 gradient-primary text-white"
-                  onClick={handleSaveSettings}
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Settings
+          <div className="flex flex-col gap-2">
+            {isEditing ? (
+              <>
+                <Button onClick={handleSave} className="bg-blue-600 text-white hover:bg-blue-700">
+                  <Save className="w-4 h-4 mr-2" /> Save
                 </Button>
-              </CardContent>
-            </Card>
-          )}
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                  <X className="w-4 h-4 mr-2" /> Cancel
+                </Button>
+              </>
+            ) : (
+              <Button variant="outline" onClick={() => setIsEditing(true)}>
+                <Edit className="w-4 h-4 mr-2" /> Edit
+              </Button>
+            )}
+            <Button variant="outline" size="icon"><Settings className="w-4 h-4" /></Button>
+          </div>
+        </div>
 
-          {/* Contact Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="glass border-white/50">
-              <CardContent className="p-6">
-                <h4 className="font-semibold text-blue-900 mb-4 flex items-center">
-                  <User className="w-5 h-5 mr-2" />
-                  Contact Information
-                </h4>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Email</p>
-                      <p className="font-medium text-blue-900">{userProfile.email}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Phone</p>
-                      <p className="font-medium text-blue-900">{userProfile.phone}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <MapPin className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Location</p>
-                      <p className="font-medium text-blue-900">{userProfile.location}</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Account Information */}
-            <Card className="glass border-white/50">
-              <CardContent className="p-6">
-                <h4 className="font-semibold text-blue-900 mb-4 flex items-center">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Account Information
-                </h4>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Member Since</p>
-                      <p className="font-medium text-blue-900">{userProfile.joinDate}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Globe className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Last Login</p>
-                      <p className="font-medium text-blue-900">{userProfile.lastLogin}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Briefcase className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-sm text-blue-600/70">Experience</p>
-                      <p className="font-medium text-blue-900">{userProfile.experience}</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Info Sections */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center"><User className="w-5 h-5 mr-2" /> Contact Information</h3>
+            <InfoLine icon={Mail} label="Email" name="email" value={formData.email} isEditing={isEditing} onChange={handleChange} />
+            <InfoLine icon={Phone} label="Phone" name="phone" value={formData.phone || ''} isEditing={isEditing} onChange={handleChange} />
+            <InfoLine icon={MapPin} label="Location" name="country" value={formData.country || ''} isEditing={isEditing} onChange={handleChange} />
           </div>
 
-          {/* Skills */}
-          <Card className="glass border-white/50">
-            <CardContent className="p-6">
-              <h4 className="font-semibold text-blue-900 mb-4 flex items-center">
-                <Star className="w-5 h-5 mr-2" />
-                Skills & Expertise
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {userProfile.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary" className="bg-blue-50 text-blue-700 px-3 py-1">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div>
+            <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center"><Calendar className="w-5 h-5 mr-2" /> Account Information</h3>
+            <InfoLine icon={Briefcase} label="Job Stream" name="job_stream" value={formData.job_stream || ''} isEditing={isEditing} onChange={handleChange} />
+            <InfoLine icon={Calendar} label="Member Since" value="January 15, 2024" />
+            <InfoLine icon={Calendar} label="Last Login" value="Today at 2:30 PM" />
+            <InfoLine icon={Star} label="Experience" value="8+ years" />
+          </div>
+        </div>
+
+        {/* About You Section */}
+        <div className="w-full">
+          <h3 className="text-lg font-semibold text-blue-800 mb-2 flex items-center">
+            <Star className="w-5 h-5 mr-2" /> About You
+          </h3>
+
+          {isEditing ? (
+            <textarea
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              className="w-full min-h-[100px] max-h-40 resize-y bg-white border border-blue-200 rounded-md px-4 py-2 text-sm text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+          ) : (
+            <p className="text-blue-700 whitespace-pre-wrap break-words">
+              {userProfile.bio?.length > 300
+                ? userProfile.bio.slice(0, 300) + '...'
+                : userProfile.bio || 'No bio provided.'}
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
   );
 };
 
+const InfoLine = ({
+  icon: Icon, label, name, value, isEditing = false, onChange
+}: {
+  icon: any,
+  label: string,
+  name?: string,
+  value: string,
+  isEditing?: boolean,
+  onChange?: any
+}) => (
+  <div className="flex items-start gap-3 mb-4">
+    <Icon className="w-4 h-4 mt-1 text-blue-600" />
+    <div className="w-full">
+      <p className="text-sm text-blue-600/70">{label}</p>
+      {isEditing && name ? (
+        <input
+          type="text"
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full bg-white border border-blue-200 rounded-md px-3 py-2 text-sm text-blue-900"
+        />
+      ) : (
+        <p className="font-medium text-blue-900">{value || 'N/A'}</p>
+      )}
+    </div>
+  </div>
+);
+
 export default ProfileModal;
+
+
+
+

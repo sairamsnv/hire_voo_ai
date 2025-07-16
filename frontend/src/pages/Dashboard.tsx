@@ -1,55 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useContext } from 'react';
+import {
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Users, 
-  Briefcase, 
-  Star, 
-  Bell, 
+import {
+  BarChart3,
+  TrendingUp,
+  Users,
+  Briefcase,
+  Star,
+  Bell,
   Calendar,
-  MapPin,
-  DollarSign,
   Crown,
   Zap,
   Target,
-  Award,
-  CreditCard,
-  Settings
 } from 'lucide-react';
 import Header from '@/components/Header';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '@/context/AuthContext';
 
 const Dashboard = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [activeApplications] = useState(12);
-  const [savedJobs] = useState(28);
-  const [profileViews] = useState(156);
-  const [interviewRequests] = useState(5);
-  const [creditsUsed] = useState(45);
-  const [creditsLimit] = useState(100);
-  const [subscriptionPlan] = useState('Premium Plan');
 
-  useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loginStatus);
-    
-    // Redirect to login if not logged in
-    if (!loginStatus) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
+  const activeApplications = 12;
+  const savedJobs = 28;
+  const profileViews = 156;
+  const interviewRequests = 5;
+  const creditsUsed = 45;
+  const creditsLimit = 100;
+  const subscriptionPlan = 'Premium Plan';
 
   const recentActivity = [
     { id: 1, type: 'application', company: 'TechCorp', position: 'Senior Developer', time: '2 hours ago' },
@@ -66,11 +49,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      
+      <Header/>
+
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Section with Credits and Subscription Info */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl">
+       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent"></div>
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
           <div className="relative z-10">
@@ -84,18 +67,17 @@ const Dashboard = () => {
                   <Crown className="w-4 h-4 mr-1" />
                   {subscriptionPlan}
                 </Badge>
-                <div className="text-right">
-                  <p className="text-blue-100 text-sm">Current Plan</p>
-                </div>
+                <p className="text-blue-100 text-sm">Current Plan</p>
               </div>
             </div>
+
             
             {/* Credits Section */}
             <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-white" />
+                    <Briefcase className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Credits Usage</h3>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext); // 👈 Using new context
 
   const unreadNotifications = 3;
 
@@ -48,23 +48,17 @@ const Header = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
-  const handleLogout = () => {
-    fetch('/api/logout/', {
-      method: 'POST',
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setIsAuthenticated(false);
-        toast({
-          title: "Successfully logged out",
-          description: "You have been logged out of your account.",
-        });
-        navigate('/');
-      })
-      .catch((err) => {
-        console.error(err);
+  const handleLogout = async () => {
+    try {
+      await logout(); // 👈 Use context logout
+      toast({
+        title: "Successfully logged out",
+        description: "You have been logged out of your account.",
       });
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -148,15 +142,21 @@ const Header = () => {
                       <Button variant="ghost" className="relative h-12 w-12 rounded-full hover:ring-2 hover:ring-blue-500/20 transition-all">
                         <Avatar className="h-12 w-12 shadow-luxury ring-2 ring-white/50">
                           <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&h=48&fit=crop&crop=face" alt="User" />
-                          <AvatarFallback className="gradient-primary text-white font-bold">SR</AvatarFallback>
+                          <AvatarFallback className="gradient-primary text-white font-bold">
+                            {user?.full_name?.[0]?.toUpperCase() || 'U'}
+                          </AvatarFallback>
                         </Avatar>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="glass w-64 shadow-luxury backdrop-blur-xl border-white/50 rounded-2xl p-2" align="end">
                       <DropdownMenuLabel className="font-normal p-4">
                         <div className="flex flex-col space-y-2">
-                          <p className="text-base font-semibold leading-none">Sayyapu Reddy Sairam</p>
-                          <p className="text-sm leading-none text-muted-foreground">sayypureddysairam@gmail.com</p>
+                          <p className="text-base font-semibold leading-none">
+                            {user?.full_name || 'User'}
+                          </p>
+                          <p className="text-sm leading-none text-muted-foreground">
+                            {user?.email}
+                          </p>
                           <Badge className="bg-green-100 text-green-800 w-fit px-2 py-1 text-xs">
                             <Shield className="w-3 h-3 mr-1" />
                             Verified

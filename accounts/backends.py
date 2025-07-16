@@ -1,5 +1,7 @@
 from django.contrib.auth.backends import BaseBackend
-from accounts.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class EmailBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -15,4 +17,6 @@ class EmailBackend(BaseBackend):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+
 

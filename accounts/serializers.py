@@ -13,7 +13,8 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password')
 
         if email and password:
-            user = authenticate(username=email, password=password)
+            request = self.context.get('request')
+            user = authenticate(request=request, username=email, password=password)
             if not user:
                 raise serializers.ValidationError("Invalid credentials")
         else:
@@ -52,5 +53,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'country',
             'job_stream',
         ]
+
 
 

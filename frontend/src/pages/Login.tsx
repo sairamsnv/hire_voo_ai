@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
-  Eye, EyeOff, Crown, Shield, Sparkles, ArrowRight, CheckCircle
+  Eye, EyeOff, Crown, Shield, Sparkles, ArrowRight, CheckCircle, Loader2
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -21,13 +21,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     general: ''
   });
 
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated, setUser, checkSession } = useContext(AuthContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -49,10 +50,16 @@ const Login = () => {
     if (!email) {
       newErrors.email = 'Email is required';
       isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
     }
 
     if (!password) {
       newErrors.password = 'Password is required';
+      isValid = false;
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
       isValid = false;
     }
 
@@ -62,45 +69,72 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!validateForm()) return;
 
+    setIsLoading(true);
+    setErrors({ email: '', password: '', general: '' });
+
     try {
-      const res = await fetch('/api/login/', {
+      // Get CSRF token first
+      await fetch('/api/csrf/', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      const response = await fetch('/api/login/', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': cookies.get('csrftoken'),
+          'X-CSRFToken': cookies.get('csrftoken') || '',
         },
-        body: JSON.stringify({ username: email, password })
+        body: JSON.stringify({ 
+          username: email, 
+          password 
+        })
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      const data = await response.json();
+
+      if (response.ok) {
+        // Update auth context
         setIsAuthenticated(true);
+        setUser(data.user);
+        
+        // Show success toast
         toast({
-          title: "Login Successful!",
-          description: `Welcome back, ${email}`,
-          className: "bg-green-50 border-green-200 text-green-800",
-        });
+  title: "Login Successful!",
+  description: `Welcome back, ${data.user?.full_name || data.user?.email}`,
+  className: "bg-green-50 border-green-200 text-green-800",
+});
+
+
+        // Redirect to dashboard
         navigate('/dashboard');
       } else {
-        const errData = await res.json();
-        setErrors({ ...errors, general: errData.detail || 'Invalid credentials' });
+        // Handle errors
+        const errorMessage = data.detail || data.error || 'Login failed. Please check your credentials.';
+        setErrors({ ...errors, general: errorMessage });
+        
         toast({
           title: "Login Failed",
-          description: errData.detail || "Invalid credentials.",
+          description: errorMessage,
           variant: "destructive",
         });
       }
     } catch (error) {
-      setErrors({ ...errors, general: 'Login error. Please try again.' });
+      console.error('Login error:', error);
+      const errorMessage = 'Unable to connect to the server. Please try again.';
+      setErrors({ ...errors, general: errorMessage });
+      
       toast({
-        title: "Login Error",
-        description: "Unable to reach the server.",
+        title: "Connection Error",
+        description: errorMessage,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
