@@ -220,5 +220,14 @@ REACT_BUILD_DIR = os.path.join(BASE_DIR, 'frontend', 'dist')
 #for the production env
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+import certifi
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'sayypureddysairam96@gmail.com'
+EMAIL_HOST_PASSWORD = 'acic pcqo htqs yjex'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_SSL_CERTFILE = certifi.where()
+
 
 

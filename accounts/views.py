@@ -19,6 +19,15 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound
 import mimetypes
 from pathlib import Path
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 class FrontendAppView(View):
     def get(self, request, *args, **kwargs):
@@ -97,25 +106,50 @@ def logout_view(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+token_generator = PasswordResetTokenGenerator()
+
+def send_verification_email(user, request):
+    current_site = get_current_site(request)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = token_generator.make_token(user)
+    verify_url = f"http://{current_site.domain}{reverse('accounts:verify-email')}?uid={uid}&token={token}"
+    subject = 'Verify your email address'
+    message = f'Hi {user.full_name},\n\nPlease verify your email by clicking the link below:\n{verify_url}\n\nIf you did not sign up, please ignore this email.'
+    send_mail(subject, message, None, [user.email])
+
 @csrf_protect
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_view(request):
     try:
         print("📥 Incoming data:", request.data)
+        email = request.data.get('email')
+        from .models import User
+        existing_user = User.objects.filter(email=email).first()
+        if existing_user:
+            if not existing_user.is_active:
+                send_verification_email(existing_user, request)
+                return Response(
+                    {'message': 'Account already exists but is not activated. Activation email resent. Please check your email.'},
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {'email': ['user with this email already exists.']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
         serializer = RegisterSerializer(data=request.data)
-
         if serializer.is_valid():
-            user = serializer.save()
+            user = serializer.save(is_active=False)  # Set inactive until verified
             print("✅ User created:", user.email)
+            send_verification_email(user, request)
             return Response(
-                {'message': 'Account created successfully'}, 
+                {'message': 'Account created successfully. Please check your email to verify your account.'}, 
                 status=status.HTTP_201_CREATED
             )
         else:
             print("❌ Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -188,3 +222,25 @@ def update_profile_view(request):
         return Response(serializer.errors, status=400)
     except Exception as e:
         return Response({'error': 'Update failed'}, status=500)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def verify_email_view(request):
+    uidb64 = request.GET.get('uid')
+    token = request.GET.get('token')
+    if not uidb64 or not token:
+        return Response({'error': 'Invalid verification link.'}, status=400)
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        from .models import User
+        user = User.objects.get(pk=uid)
+    except Exception:
+        return Response({'error': 'Invalid or expired link.'}, status=400)
+    if user.is_active:
+        return Response({'message': 'Account already verified.'}, status=200)
+    if token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return Response({'message': 'Email verified successfully. You can now log in.'}, status=200)
+    else:
+        return Response({'error': 'Invalid or expired token.'}, status=400)

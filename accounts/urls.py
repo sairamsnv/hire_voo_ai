@@ -1,6 +1,7 @@
 
 from django.urls import path
 from . import views
+from .views import verify_email_view
 app_name = 'accounts'
 urlpatterns = [
     # Authentication endpoints
@@ -8,6 +9,7 @@ urlpatterns = [
     path('api/login/', views.login_view, name='login'),
     path('api/logout/', views.logout_view, name='logout'),
     path('api/register/', views.register_view, name='register'),
+    path('api/verify-email/', verify_email_view, name='verify-email'),
     
     # Session management
     path('api/session/', views.session_check_view, name='session_check'),

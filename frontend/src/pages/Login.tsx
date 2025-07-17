@@ -168,6 +168,15 @@ const Login = () => {
             </Alert>
           )}
 
+          {searchParams.get('activation') === 'required' && (
+            <Alert className="bg-blue-50 border-blue-200">
+              <CheckCircle className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                Please check your email and click the activation link to activate your account before logging in.
+              </AlertDescription>
+            </Alert>
+          )}
+
           <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-2xl relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-transparent pointer-events-none"></div>
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>

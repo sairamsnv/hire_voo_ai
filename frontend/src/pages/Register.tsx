@@ -121,7 +121,7 @@ const Register = () => {
           description: "Your consultant profile has been created successfully.",
           className: "bg-green-50 border-green-200 text-green-800",
         });
-        navigate('/login?success=true');
+        navigate('/login?activation=required');
       } else {
         const data = await res.json();
         toast({
