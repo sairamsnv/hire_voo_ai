@@ -60,12 +60,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hire_voo_ai.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'OPTIONS': {
+#             'timeout': 30,  # Wait up to 30 seconds before failing
+#         }
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hire_voo_ai',
+        'USER': 'postgres',
+        'PASSWORD': 'R@ms@i143',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -220,14 +235,14 @@ REACT_BUILD_DIR = os.path.join(BASE_DIR, 'frontend', 'dist')
 #for the production env
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-import certifi
-EMAIL_USE_TLS = True
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sayypureddysairam96@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sayypureddysairam96@gmail.com' 
 EMAIL_HOST_PASSWORD = 'acic pcqo htqs yjex'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_SSL_CERTFILE = certifi.where()
-
-
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

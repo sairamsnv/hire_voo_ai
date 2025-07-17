@@ -103,16 +103,13 @@ const Register = () => {
           'X-CSRFToken': cookies.get('csrftoken'),
         },
         body: JSON.stringify({
-          full_name: `${formData.firstName} ${formData.lastName}`, 
-          last_name: formData.lastName,
-          email: formData.email,
-          password: formData.password,
-          expertise: formData.expertise,
-          experience: formData.experience,
-          bio: formData.bio,
-          country: formData.country,
-          job_stream: formData.jobStream
-        })
+      full_name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      password: formData.password,
+      bio: formData.bio,
+      country: formData.country,
+      job_stream: formData.jobStream
+    })
       });
 
       if (res.ok) {
