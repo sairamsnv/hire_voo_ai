@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -15,31 +15,23 @@ import {
   Eye,
   Target,
   Award,
-  Crown
+  Crown,
+  Monitor,
+  Sparkles
 } from 'lucide-react';
 import Header from '@/components/Header';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '@/context/AuthContext';
 
 const Analytics = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loginStatus);
-    
-    // Redirect to login if not logged in
-    if (!loginStatus) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
+    // Simulate loading
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
 
   const analyticsData = {
     totalJobs: 12847,
@@ -70,9 +62,31 @@ const Analytics = () => {
     { skill: 'AWS', demand: 76, growth: 22 }
   ];
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100">
+        <div className="glass rounded-3xl p-12 text-center shadow-luxury relative z-10 border-white/60">
+          <div className="w-20 h-20 mx-auto mb-6 relative">
+            <div className="absolute inset-0 gradient-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-blue-600 animate-pulse" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold gradient-text mb-3">Loading Analytics</h2>
+          <p className="text-muted-foreground text-base">Preparing your analytics dashboard...</p>
+          <div className="flex justify-center mt-6 space-x-1">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-100"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <Header />
       
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Header Section */}
@@ -88,10 +102,20 @@ const Analytics = () => {
                 </h1>
                 <p className="text-blue-100 text-lg">Deep insights into your job search performance</p>
               </div>
-              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
-                <Crown className="w-4 h-4 mr-1" />
-                Premium Analytics
-              </Badge>
+              <div className="flex items-center space-x-4">
+                {user?.is_staff && (
+                  <Link to="/sessions">
+                    <button className="bg-white/20 text-white border border-white/30 px-4 py-2 rounded-lg hover:bg-white/30 transition-colors flex items-center">
+                      <Monitor className="w-4 h-4 mr-2" />
+                      Session Management
+                    </button>
+                  </Link>
+                )}
+                <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                  <Crown className="w-4 h-4 mr-1" />
+                  Premium Analytics
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
@@ -190,21 +214,15 @@ const Analytics = () => {
               {topSkills.map((item, index) => (
                 <div key={item.skill} className="p-4 bg-blue-50/50 rounded-xl border border-blue-100/50">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-blue-900">{item.skill}</h4>
-                    <Badge className="bg-blue-100 text-blue-800 text-xs">#{index + 1}</Badge>
+                    <span className="font-semibold text-blue-900">{item.skill}</span>
+                    <Badge className="bg-blue-100 text-blue-800 text-xs">
+                      {item.demand}%
+                    </Badge>
                   </div>
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex justify-between text-xs text-blue-600/70 mb-1">
-                        <span>Demand</span>
-                        <span>{item.demand}%</span>
-                      </div>
-                      <Progress value={item.demand} className="h-2" />
-                    </div>
-                    <div className="flex items-center text-xs">
-                      <TrendingUp className="w-3 h-3 text-green-500 mr-1" />
-                      <span className="text-green-600">+{item.growth}% growth</span>
-                    </div>
+                  <Progress value={item.demand} className="h-2 mb-2" />
+                  <div className="flex items-center text-xs text-green-600">
+                    <TrendingUp className="w-3 h-3 mr-1" />
+                    +{item.growth}% growth
                   </div>
                 </div>
               ))}
@@ -212,7 +230,7 @@ const Analytics = () => {
           </CardContent>
         </Card>
 
-        {/* Market Analytics */}
+        {/* Analytics Dashboard Component */}
         <AnalyticsDashboard data={analyticsData} />
       </div>
     </div>

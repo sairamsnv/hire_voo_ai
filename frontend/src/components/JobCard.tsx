@@ -58,7 +58,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-4">
             <Avatar className="h-14 w-14 shadow-luxury ring-2 ring-white/50">
-              <AvatarImage src={`https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=56&h=56&fit=crop&crop=center`} alt={job.company} />
+              <AvatarImage src="/placeholder.svg" alt={job.company} />
               <AvatarFallback className="gradient-primary text-white font-bold text-lg">
                 {getCompanyInitials(job.company)}
               </AvatarFallback>

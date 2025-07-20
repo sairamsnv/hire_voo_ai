@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
 } from '@/components/ui/card';
@@ -17,14 +17,25 @@ import {
   Crown,
   Zap,
   Target,
+  Monitor,
+  Sparkles,
+  Shield,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/context/AuthContext';
 
 const Dashboard = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  
+
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
 
   const activeApplications = 12;
   const savedJobs = 28;
@@ -47,23 +58,45 @@ const Dashboard = () => {
 
   const creditsPercentage = (creditsUsed / creditsLimit) * 100;
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100">
+        <div className="glass rounded-3xl p-12 text-center shadow-luxury relative z-10 border-white/60">
+          <div className="w-20 h-20 mx-auto mb-6 relative">
+            <div className="absolute inset-0 gradient-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-blue-600 animate-pulse" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold gradient-text mb-3">Loading Dashboard</h2>
+          <p className="text-muted-foreground text-base">Preparing your personalized dashboard...</p>
+          <div className="flex justify-center mt-6 space-x-1">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-100"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <Header/>
 
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Welcome Section with Credits and Subscription Info */}
-       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl">
+       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-6 sm:p-8 text-white shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent"></div>
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
           <div className="relative z-10">
-            <div className="flex items-start justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 space-y-4 sm:space-y-0">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Welcome back, John! 👋</h1>
-                <p className="text-blue-100 text-lg">Ready to find your next opportunity?</p>
+                <h1 className="text-2xl sm:text-4xl font-bold mb-2">Welcome back, John! 👋</h1>
+                <p className="text-blue-100 text-base sm:text-lg">Ready to find your next opportunity?</p>
               </div>
-              <div className="text-right">
-                <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 mb-2">
+              <div className="text-left sm:text-right">
+                <Badge className="bg-white/20 text-white border-white/30 px-3 sm:px-4 py-2 mb-2">
                   <Crown className="w-4 h-4 mr-1" />
                   {subscriptionPlan}
                 </Badge>
@@ -73,8 +106,8 @@ const Dashboard = () => {
 
             
             {/* Credits Section */}
-            <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-sm border border-white/20">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-3 sm:space-y-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                     <Briefcase className="w-5 h-5 text-white" />
@@ -84,7 +117,7 @@ const Dashboard = () => {
                     <p className="text-blue-100 text-sm">Monthly allowance</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <p className="text-2xl font-bold text-white">{creditsUsed}/{creditsLimit}</p>
                   <p className="text-blue-100 text-sm">Credits used</p>
                 </div>
@@ -99,17 +132,17 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent group-hover:from-blue-500/10"></div>
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600/70 font-medium">Active Applications</p>
-                  <p className="text-3xl font-bold text-blue-900">{activeApplications}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{activeApplications}</p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <Briefcase className="h-6 w-6 text-blue-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
               </div>
             </CardContent>
@@ -117,14 +150,14 @@ const Dashboard = () => {
 
           <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent group-hover:from-green-500/10"></div>
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600/70 font-medium">Saved Jobs</p>
-                  <p className="text-3xl font-bold text-blue-900">{savedJobs}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{savedJobs}</p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Star className="h-6 w-6 text-green-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Star className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                 </div>
               </div>
             </CardContent>
@@ -132,14 +165,14 @@ const Dashboard = () => {
 
           <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent group-hover:from-purple-500/10"></div>
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600/70 font-medium">Profile Views</p>
-                  <p className="text-3xl font-bold text-blue-900">{profileViews}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{profileViews}</p>
                 </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <Users className="h-6 w-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -147,14 +180,14 @@ const Dashboard = () => {
 
           <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent group-hover:from-orange-500/10"></div>
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600/70 font-medium">Interview Requests</p>
-                  <p className="text-3xl font-bold text-blue-900">{interviewRequests}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{interviewRequests}</p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                  <Calendar className="h-6 w-6 text-orange-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
                 </div>
               </div>
             </CardContent>
@@ -162,7 +195,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Recent Activity */}
           <div className="lg:col-span-2">
             <Card className="backdrop-blur-xl bg-white/90 border-white/50 shadow-xl">
@@ -228,20 +261,42 @@ const Dashboard = () => {
                     View Analytics
                   </Button>
                 </Link>
-                <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
-                  <Star className="w-4 h-4 mr-2" />
-                  Browse Jobs
-                </Button>
                 <Link to="/people">
                   <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
                     <Users className="w-4 h-4 mr-2" />
                     Find People
                   </Button>
                 </Link>
+                <Link to="/pricing">
+                  <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
+                    <Crown className="w-4 h-4 mr-2" />
+                    View Pricing
+                  </Button>
+                </Link>
+                <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
+                  <Star className="w-4 h-4 mr-2" />
+                  Browse Jobs
+                </Button>
                 <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
                   <Target className="w-4 h-4 mr-2" />
                   Update Profile
                 </Button>
+                                {user?.is_staff && (
+                  <>
+                    <Link to="/sessions">
+                      <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
+                        <Monitor className="w-4 h-4 mr-2" />
+                        Session Management
+                      </Button>
+                    </Link>
+                    <Link to="/security">
+                      <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Security Dashboard
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>

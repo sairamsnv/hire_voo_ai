@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   User, Mail, Calendar, MapPin, Briefcase, Shield,
-  Crown, Star, Edit, Camera, Settings, Save, X, Phone
+  Crown, Star, Edit, Camera, Settings, Save, X, Phone, Loader2
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -35,6 +35,11 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [pendingEmail, setPendingEmail] = useState(userProfile?.pending_email || '');
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -69,6 +74,7 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   };
 
   const handleSave = async () => {
+    setSaveLoading(true);
     try {
       const res = await axios.put('/api/update_profile/', formData, {
         withCredentials: true,
@@ -82,6 +88,38 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
     } catch (err) {
       toast({ title: 'Update Failed', description: 'Could not save changes.', variant: 'destructive' });
       console.error(err);
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    setEmailLoading(true);
+    try {
+      const res = await axios.post(
+        '/api/change-email/',
+        { new_email: newEmail },
+        {
+          withCredentials: true,
+          headers: { 'X-CSRFToken': getCSRFToken() }
+        }
+      );
+      toast({
+        title: 'Verification Sent',
+        description: 'Check your new email for a verification link.',
+        className: 'bg-blue-50 border-blue-200 text-blue-800'
+      });
+      setPendingEmail(newEmail);
+      setShowEmailInput(false);
+      setNewEmail('');
+    } catch (err) {
+      toast({
+        title: 'Change Failed',
+        description: err?.response?.data?.error || 'Could not send verification email.',
+        variant: 'destructive'
+      });
+    } finally {
+      setEmailLoading(false);
     }
   };
 
@@ -142,10 +180,10 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
           <div className="flex flex-col gap-2">
             {isEditing ? (
               <>
-                <Button onClick={handleSave} className="bg-blue-600 text-white hover:bg-blue-700">
-                  <Save className="w-4 h-4 mr-2" /> Save
+                <Button onClick={handleSave} className="bg-blue-600 text-white hover:bg-blue-700" disabled={saveLoading}>
+                  {saveLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} Save
                 </Button>
-                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                <Button variant="outline" onClick={() => setIsEditing(false)} disabled={saveLoading}>
                   <X className="w-4 h-4 mr-2" /> Cancel
                 </Button>
               </>
@@ -163,6 +201,38 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
           <div>
             <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center"><User className="w-5 h-5 mr-2" /> Contact Information</h3>
             <InfoLine icon={Mail} label="Email" name="email" value={formData.email} isEditing={isEditing} onChange={handleChange} />
+            {isEditing && (
+              <>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => setShowEmailInput((v) => !v)}
+                >
+                  Change Email
+                </Button>
+                {showEmailInput && (
+                  <div className="flex flex-col gap-2 mt-2">
+                    <input
+                      type="email"
+                      placeholder="Enter new email"
+                      value={newEmail}
+                      onChange={e => setNewEmail(e.target.value)}
+                      className="w-full bg-white border border-blue-200 rounded-md px-3 py-2 text-sm text-blue-900"
+                    />
+                    <Button size="sm" onClick={handleChangeEmail} disabled={emailLoading}>
+                      {emailLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                      Send Verification
+                    </Button>
+                  </div>
+                )}
+                {pendingEmail && (
+                  <div className="text-blue-600 text-xs mt-1">
+                    Pending verification: <span className="font-semibold">{pendingEmail}</span>
+                  </div>
+                )}
+              </>
+            )}
             <InfoLine icon={Phone} label="Phone" name="phone" value={formData.phone || ''} isEditing={isEditing} onChange={handleChange} />
             <InfoLine icon={MapPin} label="Location" name="country" value={formData.country || ''} isEditing={isEditing} onChange={handleChange} />
           </div>

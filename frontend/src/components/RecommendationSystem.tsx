@@ -19,7 +19,7 @@ const RecommendationSystem = () => {
       match: 95,
       reason: "Perfect match for your React and TypeScript skills",
       skills: ["React", "TypeScript", "AWS"],
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=40&h=40&fit=crop"
+      logo: "/placeholder.svg"
     },
     {
       id: 2,
@@ -30,7 +30,7 @@ const RecommendationSystem = () => {
       match: 88,
       reason: "Strong alignment with your full-stack experience",
       skills: ["Node.js", "React", "PostgreSQL"],
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=40&h=40&fit=crop"
+      logo: "/placeholder.svg"
     },
     {
       id: 3,
@@ -41,7 +41,7 @@ const RecommendationSystem = () => {
       match: 82,
       reason: "Leadership role matching your senior experience",
       skills: ["Vue.js", "React", "Team Lead"],
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=40&h=40&fit=crop"
+      logo: "/placeholder.svg"
     }
   ];
 
@@ -55,7 +55,7 @@ const RecommendationSystem = () => {
       trend: "+45%",
       growth: "High demand field",
       skills: ["Python", "TensorFlow", "ML"],
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=40&h=40&fit=crop"
+      logo: "/placeholder.svg"
     },
     {
       id: 5,
@@ -66,7 +66,7 @@ const RecommendationSystem = () => {
       trend: "+38%",
       growth: "Rapidly growing",
       skills: ["Docker", "Kubernetes", "AWS"],
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=40&h=40&fit=crop"
+      logo: "/placeholder.svg"
     }
   ];
 

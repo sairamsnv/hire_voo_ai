@@ -1,0 +1,1 @@
+web: gunicorn hire_voo_ai.wsgi --log-file - 

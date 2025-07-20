@@ -77,6 +77,35 @@
     @apply bg-background text-foreground;
     background: #ffffff;
     min-height: 100vh;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+
+  /* Mobile-first responsive typography */
+  h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  h3 {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+
+  /* Touch-friendly button sizes */
+  button, .btn {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Mobile-optimized spacing */
+  .mobile-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-margin {
+    @apply mx-4 sm:mx-6 lg:mx-8;
   }
 }
 
@@ -251,5 +280,69 @@
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(59, 130, 246, 0.1);
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Mobile-responsive utilities */
+  .mobile-card {
+    @apply rounded-xl sm:rounded-2xl p-4 sm:p-6;
+  }
+
+  .mobile-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  .mobile-heading {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+
+  .mobile-flex {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  .mobile-space {
+    @apply space-y-4 sm:space-y-6 lg:space-y-8;
+  }
+
+  .mobile-gap {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Touch-friendly interactions */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  .mobile-button {
+    @apply px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-xl;
+  }
+
+  /* Mobile-optimized containers */
+  .mobile-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-section {
+    @apply py-6 sm:py-8 lg:py-12;
+  }
+
+  /* Responsive spacing */
+  .mobile-mt {
+    @apply mt-4 sm:mt-6 lg:mt-8;
+  }
+
+  .mobile-mb {
+    @apply mb-4 sm:mb-6 lg:mb-8;
+  }
+
+  .mobile-mx {
+    @apply mx-4 sm:mx-6 lg:mx-8;
+  }
+
+  .mobile-my {
+    @apply my-4 sm:my-6 lg:my-8;
   }
 }

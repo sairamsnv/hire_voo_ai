@@ -9,9 +9,14 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
-import Pricing from "./pages/Pricing";
 import People from "./pages/People";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import SessionManagement from "./pages/SessionManagement";
+import SecurityDashboard from "./pages/SecurityDashboard";
+import UserManagement from "./pages/UserManagement";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 const queryClient = new QueryClient();
@@ -19,6 +24,13 @@ const queryClient = new QueryClient();
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useContext(AuthContext);
   return isAuthenticated ? children : <Navigate to="/login" />;
+};
+
+const AdminRoute = ({ children }: { children: JSX.Element }) => {
+  const { isAuthenticated, user } = useContext(AuthContext);
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  if (!user?.is_staff) return <Navigate to="/dashboard" />;
+  return children;
 };
 
 const App = () => {
@@ -57,14 +69,6 @@ const App = () => {
                 }
               />
               <Route
-                path="/pricing"
-                element={
-                  <PrivateRoute>
-                    <Pricing />
-                  </PrivateRoute>
-                }
-              />
-              <Route
                 path="/people"
                 element={
                   <PrivateRoute>
@@ -72,6 +76,33 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path="/sessions"
+                element={
+                  <AdminRoute>
+                    <SessionManagement />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/security"
+                element={
+                  <AdminRoute>
+                    <SecurityDashboard />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/users"
+                element={
+                  <AdminRoute>
+                    <UserManagement />
+                  </AdminRoute>
+                }
+              />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

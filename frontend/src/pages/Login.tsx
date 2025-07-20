@@ -41,6 +41,14 @@ const Login = () => {
         className: "bg-green-50 border-green-200 text-green-800",
       });
     }
+    // Show toast if account was just verified
+    if (searchParams.get('verified') === '1') {
+      toast({
+        title: "Account Verified!",
+        description: "Your account has been verified. Please login to continue.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+    }
   }, [searchParams, toast]);
 
   const validateForm = () => {
@@ -102,13 +110,15 @@ const Login = () => {
         setIsAuthenticated(true);
         setUser(data.user);
         
+        // Refresh session data to get complete user info (including is_staff)
+        await checkSession();
+        
         // Show success toast
         toast({
-  title: "Login Successful!",
-  description: `Welcome back, ${data.user?.full_name || data.user?.email}`,
-  className: "bg-green-50 border-green-200 text-green-800",
-});
-
+          title: "Login Successful!",
+          description: `Welcome back, ${data.user?.full_name || data.user?.email}`,
+          className: "bg-green-50 border-green-200 text-green-800",
+        });
 
         // Redirect to dashboard
         navigate('/dashboard');
@@ -173,6 +183,15 @@ const Login = () => {
               <CheckCircle className="h-4 w-4 text-blue-600" />
               <AlertDescription className="text-blue-800">
                 Please check your email and click the activation link to activate your account before logging in.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {searchParams.get('verified') === '1' && (
+            <Alert className="bg-green-50 border-green-200">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-800">
+                Your account has been verified! Please login to continue.
               </AlertDescription>
             </Alert>
           )}
@@ -251,6 +270,11 @@ const Login = () => {
                   {errors.password && (
                     <p className="text-sm text-red-600 mt-1">{errors.password}</p>
                   )}
+                  <div className="text-right mt-2">
+                    <Link to="/forgot-password" className="text-blue-600 hover:underline text-sm font-medium">
+                      Forgot password?
+                    </Link>
+                  </div>
                 </div>
 
                 <Button

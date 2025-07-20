@@ -1,36 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Star, Users, Crown, Briefcase, Award, Shield, Filter, Calendar, DollarSign } from 'lucide-react';
+import { Search, MapPin, Star, Users, Crown, Briefcase, Award, Shield, Filter, Calendar, DollarSign, Sparkles } from 'lucide-react';
 import Header from '@/components/Header';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '@/context/AuthContext';
 
 const People = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSkill, setSelectedSkill] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loginStatus);
-    
-    // Redirect to login if not logged in
-    if (!loginStatus) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    navigate('/login');
-  };
+    // Simulate loading
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
 
   // Mock consultant data
   const consultants = [
@@ -46,7 +36,7 @@ const People = () => {
       availability: 'Available',
       subscriptionPlan: 'Premium Plan',
       completedProjects: 47,
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b69b7ba8?w=150&h=150&fit=crop&crop=face'
+      avatar: '/placeholder.svg'
     },
     {
       id: 2,
@@ -60,7 +50,7 @@ const People = () => {
       availability: 'Available',
       subscriptionPlan: 'Lite Plan',
       completedProjects: 32,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+      avatar: '/placeholder.svg'
     },
     {
       id: 3,
@@ -74,7 +64,7 @@ const People = () => {
       availability: 'Busy until March',
       subscriptionPlan: 'Pro Plan',
       completedProjects: 29,
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
+      avatar: '/placeholder.svg'
     },
     {
       id: 4,
@@ -88,7 +78,7 @@ const People = () => {
       availability: 'Available',
       subscriptionPlan: 'Premium Plan',
       completedProjects: 56,
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+      avatar: '/placeholder.svg'
     }
   ];
 
@@ -116,9 +106,31 @@ const People = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="glass rounded-3xl p-12 text-center shadow-luxury relative z-10 border-white/60">
+          <div className="w-20 h-20 mx-auto mb-6 relative">
+            <div className="absolute inset-0 gradient-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-blue-600 animate-pulse" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold gradient-text mb-3">Loading People</h2>
+          <p className="text-muted-foreground text-base">Finding top consultants for you...</p>
+          <div className="flex justify-center mt-6 space-x-1">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-100"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <Header />
       
       {/* Hero Section */}
       <section className="py-16 px-4">
@@ -198,83 +210,77 @@ const People = () => {
             {filteredConsultants.map((consultant) => (
               <Card key={consultant.id} className="glass card-hover shadow-luxury border-white/60 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-transparent"></div>
-                <CardHeader className="relative z-10 pb-4">
+                <CardContent className="relative z-10 p-6">
                   <div className="flex items-start justify-between mb-4">
-                    <Avatar className="w-16 h-16 shadow-luxury ring-2 ring-white/50">
-                      <AvatarImage src={consultant.avatar} alt={consultant.name} />
-                      <AvatarFallback className="gradient-primary text-white font-bold text-lg">
-                        {consultant.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <Badge className={`${getPlanColor(consultant.subscriptionPlan)} px-3 py-1 text-xs font-semibold`}>
-                      {consultant.subscriptionPlan}
-                    </Badge>
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg font-bold text-blue-900 mb-1">
-                      {consultant.name}
-                    </CardTitle>
-                    <CardDescription className="text-blue-600/70 font-medium mb-2">
-                      {consultant.title}
-                    </CardDescription>
-                    <div className="flex items-center gap-2 text-sm text-blue-600/70 mb-3">
-                      <MapPin className="w-4 h-4" />
-                      <span>{consultant.location}</span>
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="w-12 h-12 ring-2 ring-white/50">
+                        <AvatarImage src={consultant.avatar} alt={consultant.name} />
+                        <AvatarFallback className="gradient-primary text-white font-bold">
+                          {consultant.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-semibold text-lg text-blue-900">{consultant.name}</h3>
+                        <p className="text-sm text-blue-600/70">{consultant.title}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                      <span className="text-sm font-semibold text-blue-900">{consultant.rating}</span>
                     </div>
                   </div>
-                </CardHeader>
 
-                <CardContent className="relative z-10 space-y-4">
-                  {/* Skills */}
-                  <div>
-                    <p className="text-sm font-medium text-blue-900 mb-2">Skills</p>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="space-y-3">
+                    <div className="flex items-center text-sm text-blue-600/70">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      {consultant.location}
+                    </div>
+
+                    <div className="flex flex-wrap gap-1">
                       {consultant.skills.slice(0, 3).map((skill, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs bg-blue-50 text-blue-700">
+                        <Badge key={index} variant="outline" className="text-xs bg-blue-50/50 border-blue-200/50 text-blue-700">
                           {skill}
                         </Badge>
                       ))}
                       {consultant.skills.length > 3 && (
-                        <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700">
+                        <Badge variant="outline" className="text-xs bg-blue-50/50 border-blue-200/50 text-blue-700">
                           +{consultant.skills.length - 3} more
                         </Badge>
                       )}
                     </div>
-                  </div>
 
-                  {/* Stats */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Star className="w-4 h-4 text-yellow-500" />
-                      <span className="font-medium">{consultant.rating}</span>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-blue-600/70">Experience:</span>
+                      <span className="font-semibold text-blue-900">{consultant.experience}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-blue-600" />
-                      <span>{consultant.completedProjects} projects</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-green-600" />
-                      <span className="text-xs">{consultant.experience}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-purple-600" />
-                      <span className="font-medium text-xs">{consultant.hourlyRate}</span>
-                    </div>
-                  </div>
 
-                  {/* Availability */}
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${consultant.availability === 'Available' ? 'bg-green-500' : 'bg-orange-500'}`}></div>
-                    <span className="text-sm font-medium">{consultant.availability}</span>
-                  </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-blue-600/70">Rate:</span>
+                      <span className="font-semibold text-blue-900">{consultant.hourlyRate}</span>
+                    </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 pt-2">
-                    <Button className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-blue-600/70">Projects:</span>
+                      <span className="font-semibold text-blue-900">{consultant.completedProjects}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <Badge className={`text-xs ${getPlanColor(consultant.subscriptionPlan)}`}>
+                        <Crown className="w-3 h-3 mr-1" />
+                        {consultant.subscriptionPlan}
+                      </Badge>
+                      <Badge className={`text-xs ${
+                        consultant.availability === 'Available' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-orange-100 text-orange-800'
+                      }`}>
+                        {consultant.availability}
+                      </Badge>
+                    </div>
+
+                    <Button className="w-full btn-glossy text-white mt-4 shadow-luxury">
+                      <Briefcase className="w-4 h-4 mr-2" />
                       View Profile
-                    </Button>
-                    <Button variant="outline" className="flex-1 border-blue-200 text-blue-700 hover:bg-blue-50 text-sm">
-                      Contact
                     </Button>
                   </div>
                 </CardContent>

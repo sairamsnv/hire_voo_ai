@@ -1,3 +1,7 @@
+"""
+Django settings for hire_voo_ai project.
+"""
+
 import os
 from pathlib import Path
 
@@ -31,6 +35,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.RequestLoggingMiddleware',
 ]
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailBackend',  # ✅ Correct place
@@ -174,6 +179,7 @@ CSRF_USE_SESSIONS = False  # Use cookie-based CSRF tokens
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'accounts.authentication.APIKeyAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -245,4 +251,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sayypureddysairam96@gmail.com' 
 EMAIL_HOST_PASSWORD = 'acic pcqo htqs yjex'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
