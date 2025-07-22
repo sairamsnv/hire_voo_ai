@@ -4,6 +4,11 @@ from django.utils import timezone
 from django.contrib.sessions.models import Session
 import uuid
 import secrets
+import os
+import base64
+import qrcode
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 
 class UserManager(BaseUserManager):
@@ -13,7 +18,8 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        # Explicitly use default database for accounts
+        user.save(using='default')
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -320,3 +326,249 @@ class SessionSettings(models.Model):
 
     def __str__(self):
         return f"Session settings for {self.user.email}"
+
+
+class UserSettings(models.Model):
+    """User preferences and settings"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_settings')
+    
+    # Appearance settings
+    dark_mode = models.BooleanField(default=False)
+    font_size = models.CharField(max_length=10, default='medium', choices=[
+        ('small', 'Small'),
+        ('medium', 'Medium'),
+        ('large', 'Large'),
+    ])
+    
+    # Notification settings
+    email_notifications = models.BooleanField(default=True)
+    push_notifications = models.BooleanField(default=True)
+    job_alerts = models.BooleanField(default=True)
+    marketing_emails = models.BooleanField(default=False)
+    
+    # Privacy & Security settings
+    sound_enabled = models.BooleanField(default=True)
+    auto_save = models.BooleanField(default=True)
+    
+    # Regional settings
+    language = models.CharField(max_length=20, default='english', choices=[
+        ('english', 'English'),
+        ('spanish', 'Spanish'),
+        ('french', 'French'),
+        ('german', 'German'),
+    ])
+    currency = models.CharField(max_length=10, default='usd', choices=[
+        ('usd', 'USD ($)'),
+        ('eur', 'EUR (€)'),
+        ('gbp', 'GBP (£)'),
+        ('cad', 'CAD (C$)'),
+    ])
+    timezone = models.CharField(max_length=20, default='pst', choices=[
+        ('pst', 'Pacific Time (PST)'),
+        ('est', 'Eastern Time (EST)'),
+        ('utc', 'UTC'),
+        ('cet', 'Central European Time'),
+    ])
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = "User settings"
+
+    def __str__(self):
+        return f"Settings for {self.user.email}"
+
+
+class UserPhoto(models.Model):
+    """User profile photo upload model"""
+    PHOTO_TYPES = [
+        ('profile', 'Profile Photo'),
+        ('cover', 'Cover Photo'),
+        ('gallery', 'Gallery Photo'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='photos')
+    photo_type = models.CharField(max_length=20, choices=PHOTO_TYPES, default='profile')
+    image = models.ImageField(upload_to='user_photos/%Y/%m/%d/')
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    is_primary = models.BooleanField(default=False, help_text="Primary photo for this type")
+    file_size = models.PositiveIntegerField(help_text="File size in bytes")
+    file_type = models.CharField(max_length=50, help_text="MIME type of the image")
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-uploaded_at']
+        indexes = [
+            models.Index(fields=['user', 'photo_type']),
+            models.Index(fields=['is_primary']),
+            models.Index(fields=['uploaded_at']),
+        ]
+        unique_together = [['user', 'photo_type', 'is_primary']]
+
+    def __str__(self):
+        return f"{self.user.email} - {self.photo_type} photo"
+
+    def save(self, *args, **kwargs):
+        # If this photo is set as primary, unset other primary photos of the same type
+        if self.is_primary:
+            UserPhoto.objects.filter(
+                user=self.user, 
+                photo_type=self.photo_type, 
+                is_primary=True
+            ).exclude(id=self.id).update(is_primary=False)
+        super().save(*args, **kwargs)
+
+    @property
+    def file_size_mb(self):
+        """Return file size in MB"""
+        return round(self.file_size / (1024 * 1024), 2)
+
+    @property
+    def image_url(self):
+        """Return the URL of the image"""
+        if self.image:
+            return self.image.url
+        return None
+    
+    def get_admin_image_preview(self):
+        """Return HTML for admin image preview"""
+        if self.image:
+            return f'<img src="{self.image.url}" style="max-width: 100px; max-height: 100px;" />'
+        return "No image"
+    get_admin_image_preview.short_description = 'Image Preview'
+    get_admin_image_preview.allow_tags = True
+
+    def delete(self, *args, **kwargs):
+        """Delete the image file from filesystem when deleting the record"""
+        if self.image:
+            # Delete the image file from storage
+            if os.path.exists(self.image.path):
+                os.remove(self.image.path)
+        super().delete(*args, **kwargs)
+
+
+class TwoFactorAuth(models.Model):
+    """Two-Factor Authentication model for TOTP"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='two_factor_auth')
+    secret_key = models.CharField(max_length=32, unique=True, help_text="TOTP secret key")
+    is_enabled = models.BooleanField(default=False, help_text="Whether 2FA is enabled")
+    backup_codes = models.JSONField(default=list, help_text="Backup codes for account recovery")
+    qr_code = models.ImageField(upload_to='2fa_qr_codes/', null=True, blank=True, help_text="QR code for authenticator app")
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_used = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Two-Factor Authentication"
+        verbose_name_plural = "Two-Factor Authentication"
+
+    def __str__(self):
+        return f"2FA for {self.user.email}"
+
+    def generate_secret_key(self):
+        """Generate a new TOTP secret key"""
+        return base64.b32encode(os.urandom(10)).decode('utf-8')
+
+    def generate_backup_codes(self, count=8):
+        """Generate backup codes for account recovery"""
+        codes = []
+        for _ in range(count):
+            code = secrets.token_hex(4).upper()[:8]  # 8-character hex code
+            codes.append(code)
+        return codes
+
+    def generate_qr_code(self):
+        """Generate QR code for authenticator app"""
+        if not self.secret_key:
+            return None
+        
+        # Create TOTP URI
+        totp_uri = f"otpauth://totp/HireVooAI:{self.user.email}?secret={self.secret_key}&issuer=HireVooAI"
+        
+        # Generate QR code
+        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        qr.add_data(totp_uri)
+        qr.make(fit=True)
+        
+        # Create image
+        img = qr.make_image(fill_color="black", back_color="white")
+        
+        # Convert to Django ImageField
+        buffer = BytesIO()
+        img.save(buffer, format='PNG')
+        buffer.seek(0)
+        
+        # Save to model
+        filename = f"2fa_qr_{self.user.id}_{self.secret_key[:8]}.png"
+        self.qr_code.save(filename, ContentFile(buffer.getvalue()), save=False)
+        
+        return self.qr_code
+
+    def verify_totp(self, token):
+        """Verify TOTP token"""
+        try:
+            import pyotp
+            totp = pyotp.TOTP(self.secret_key)
+            return totp.verify(token)
+        except Exception:
+            return False
+
+    def verify_backup_code(self, code):
+        """Verify backup code and remove it if valid"""
+        if code in self.backup_codes:
+            self.backup_codes.remove(code)
+            self.save()
+            return True
+        return False
+
+    def setup_2fa(self):
+        """Setup 2FA for user"""
+        if not self.secret_key:
+            self.secret_key = self.generate_secret_key()
+        
+        if not self.backup_codes:
+            self.backup_codes = self.generate_backup_codes()
+        
+        self.generate_qr_code()
+        self.save()
+
+    def enable_2fa(self):
+        """Enable 2FA"""
+        self.is_enabled = True
+        self.save()
+
+    def disable_2fa(self):
+        """Disable 2FA"""
+        self.is_enabled = False
+        self.save()
+
+    def get_totp_uri(self):
+        """Get TOTP URI for authenticator apps"""
+        if not self.secret_key:
+            return None
+        return f"otpauth://totp/HireVooAI:{self.user.email}?secret={self.secret_key}&issuer=HireVooAI"
+
+
+class TwoFactorBackupCode(models.Model):
+    """Backup codes for 2FA recovery"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='backup_codes')
+    code = models.CharField(max_length=8, unique=True)
+    is_used = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    used_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Backup code for {self.user.email}"
+
+    def use_code(self):
+        """Mark backup code as used"""
+        self.is_used = True
+        self.used_at = timezone.now()
+        self.save()

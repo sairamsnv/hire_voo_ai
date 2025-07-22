@@ -20,9 +20,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'job_scraper',
+    'jobs_dashboard',
+    'people_dashboard',
+    'analytics_dashboard',
+    'user_dashboard',
+    'credits_dashboard',
+    'notifications_dashboard',
+    'pricing_dashboard',
     'rest_framework',
     'corsheaders', 
     'rest_framework.authtoken',
+    'django_filters',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -38,8 +49,8 @@ MIDDLEWARE = [
     'accounts.middleware.RequestLoggingMiddleware',
 ]
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailBackend',  # ✅ Correct place
-    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailBackend',  # Custom email backend first
+    'django.contrib.auth.backends.ModelBackend',  # Fallback
 ]
 
 
@@ -75,16 +86,28 @@ WSGI_APPLICATION = 'hire_voo_ai.wsgi.application'
 #     }
 # }
 
+# Database Configuration for Read-Write Separation
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hire_voo_ai',
+        'NAME': 'hire_voo_ai_write',  # Write database
+        'USER': 'postgres',
+        'PASSWORD': 'R@ms@i143',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
+    'read': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hire_voo_ai_read',  # Read database
         'USER': 'postgres',
         'PASSWORD': 'R@ms@i143',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
+# Database Router for Read-Write Separation
+DATABASE_ROUTERS = ['hire_voo_ai.database_router.DatabaseRouter']
 
 
 # Password validation
@@ -103,146 +126,90 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
+# https://docs.djangoproject.com/en/5.0/topics/i18n/
+
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend' / 'dist',
+]
+
+# React build directory
+REACT_BUILD_DIR = BASE_DIR / 'frontend' / 'dist'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# CORS Settings - Updated to support port 8080
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://localhost:5173",      # <-- add this
-    "http://127.0.0.1:5173",
-    "http://192.168.31.183:8080"
-]
-
-# CSRF Settings - Updated to support port 8080
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://localhost:5173",      # <-- add this
-    "http://127.0.0.1:5173",
-    "http://192.168.31.183:8080"
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'cookie',  # Important for session handling
-]
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-
-# Session Configuration
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_NAME = 'sessionid'
-SESSION_COOKIE_AGE = 1209600  # 2 weeks
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
-SESSION_COOKIE_SAMESITE = 'Lax'  # Important for cross-origin requests
-SESSION_SAVE_EVERY_REQUEST = True  # Ensure session is saved on every request
-
-
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_HTTPONLY = False  # Must be False so JavaScript can read it
-CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
-CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
-CSRF_USE_SESSIONS = False  # Use cookie-based CSRF tokens
 
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        'accounts.authentication.APIKeyAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    # Add this for better error handling
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
-AUTH_USER_MODEL = 'accounts.User'
+# Session Configuration
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'sessions'
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_SAVE_EVERY_REQUEST = True
 
-# Sentry integration
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+# Authentication Configuration
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 
-dsn = os.getenv("SENTRY_DSN")
-if dsn:
-    sentry_sdk.init(
-        dsn=dsn, 
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-        send_default_pii=True,
-    )
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
 
-# Logging for debugging
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+CORS_ALLOW_CREDENTIALS = True
 
+# Sentry configuration (commented out for now)
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
 
-
-# Static files (React + Django)
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    BASE_DIR.joinpath('frontend', 'dist'),
-)
-REACT_BUILD_DIR = os.path.join(BASE_DIR, 'frontend', 'dist')
-
-
-#for the production env
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
+# sentry_sdk.init(
+#     dsn="your-sentry-dsn",
+#     integrations=[DjangoIntegration()],
+#     traces_sample_rate=1.0,
+#     send_default_pii=True,
+# )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -251,3 +218,88 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sayypureddysairam96@gmail.com' 
 EMAIL_HOST_PASSWORD = 'acic pcqo htqs yjex'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# For development/testing, you can use console backend instead
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Celery Configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# Redis Configuration for Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',  # Use database 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'hire_voo_ai',
+        'TIMEOUT': 300,  # 5 minutes default timeout
+    },
+    'sessions': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/2',  # Use database 2 for sessions
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'session',
+    },
+    'jobs': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/3',  # Use database 3 for job data
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'jobs',
+        'TIMEOUT': 3600,  # 1 hour for job data
+    }
+}
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'job_scraper': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+# Create logs directory
+os.makedirs(BASE_DIR / 'logs', exist_ok=True)

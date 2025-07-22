@@ -49,6 +49,21 @@ const Login = () => {
         className: "bg-green-50 border-green-200 text-green-800",
       });
     }
+    // Show error if verification failed
+    if (searchParams.get('error') === 'invalid_link') {
+      toast({
+        title: "Verification Failed",
+        description: "The verification link is invalid or has expired.",
+        variant: "destructive",
+      });
+    }
+    if (searchParams.get('error') === 'invalid_token') {
+      toast({
+        title: "Verification Failed",
+        description: "The verification token is invalid or has expired.",
+        variant: "destructive",
+      });
+    }
   }, [searchParams, toast]);
 
   const validateForm = () => {

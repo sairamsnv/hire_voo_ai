@@ -13,6 +13,7 @@ import {
   Crown, Star, Edit, Camera, Settings, Save, X, Phone, Loader2
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import PhotoUpload from './PhotoUpload';
 
 function getCSRFToken() {
   const name = 'csrftoken';
@@ -40,6 +41,8 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   const [pendingEmail, setPendingEmail] = useState(userProfile?.pending_email || '');
   const [emailLoading, setEmailLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [userPhotos, setUserPhotos] = useState<any[]>([]);
+  const [primaryProfilePhoto, setPrimaryProfilePhoto] = useState<any>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -49,6 +52,16 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
         if (res.data?.isAuthenticated) {
           setUserProfile(res.data.user);
           setFormData(res.data.user);
+          
+          // Fetch user photos
+          try {
+            const photosRes = await axios.get('/api/photos/?photo_type=profile', { withCredentials: true });
+            setUserPhotos(photosRes.data);
+            const primary = photosRes.data.find((photo: any) => photo.is_primary);
+            setPrimaryProfilePhoto(primary);
+          } catch (photoError) {
+            console.error('Error fetching photos:', photoError);
+          }
         } else {
           toast({
             title: 'Authentication Error',
@@ -67,7 +80,7 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
       }
     };
     fetchProfile();
-  }, [isOpen]);
+  }, [isOpen, userPhotos.length]); // Re-fetch when photos change
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -123,7 +136,39 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
     }
   };
 
-  const avatarURL = `https://api.dicebear.com/8.x/thumbs/svg?seed=${encodeURIComponent(formData.full_name || 'User')}`;
+  const avatarURL = primaryProfilePhoto?.image_url || `https://api.dicebear.com/8.x/thumbs/svg?seed=${encodeURIComponent(formData.full_name || 'User')}`;
+  
+  // Debug log
+  console.log('Profile Photo Debug:', {
+    primaryProfilePhoto,
+    avatarURL,
+    userPhotos: userPhotos.length
+  });
+
+  const handlePhotoUploaded = (photo: any) => {
+    setUserPhotos(prev => [photo, ...prev]);
+    if (photo.is_primary) {
+      setPrimaryProfilePhoto(photo);
+    }
+    // Force re-render of profile data
+    setUserProfile(prev => ({ ...prev }));
+  };
+
+  const handlePhotoDeleted = (photoId: string) => {
+    setUserPhotos(prev => prev.filter(p => p.id !== photoId));
+    if (primaryProfilePhoto?.id === photoId) {
+      setPrimaryProfilePhoto(null);
+    }
+  };
+
+  const handlePhotoUpdated = (photo: any) => {
+    setUserPhotos(prev => prev.map(p => p.id === photo.id ? photo : p));
+    if (photo.is_primary) {
+      setPrimaryProfilePhoto(photo);
+    }
+    // Force re-render of profile data
+    setUserProfile(prev => ({ ...prev }));
+  };
 
   if (loading || !userProfile) return null;
 
@@ -139,14 +184,28 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
           <div className="relative">
             <Avatar className="h-28 w-28 ring-4 ring-white/80 shadow-lg">
-              <AvatarImage src={avatarURL} alt={formData.full_name} />
+              <AvatarImage 
+                src={avatarURL} 
+                alt={formData.full_name}
+                onError={(e) => {
+                  console.error('Avatar image failed to load:', avatarURL);
+                  e.currentTarget.style.display = 'none';
+                }}
+                onLoad={() => {
+                  console.log('Avatar image loaded successfully:', avatarURL);
+                }}
+              />
               <AvatarFallback className="bg-blue-100 text-blue-900 text-2xl">
                 {formData.full_name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <Button size="icon" className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-blue-600 text-white shadow">
-              <Camera className="w-4 h-4" />
-            </Button>
+            <PhotoUpload
+              photoType="profile"
+              onPhotoUploaded={handlePhotoUploaded}
+              onPhotoDeleted={handlePhotoDeleted}
+              onPhotoUpdated={handlePhotoUpdated}
+              className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-blue-600 text-white shadow hover:bg-blue-700 border-0"
+            />
           </div>
 
           <div className="flex-1">

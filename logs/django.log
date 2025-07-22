@@ -1,0 +1,905 @@
+INFO 2025-07-21 15:42:08,227 autoreload 58617 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:42:15,906 middleware 58617 6190690304 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 15:42:15,908 middleware 58617 6190690304 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 15:42:15,909 basehttp 58617 6190690304 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 15:42:15,916 middleware 58617 6190690304 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+WARNING 2025-07-21 15:42:15,919 log 58617 6190690304 Method Not Allowed (POST): /api/2fa/verify-required/
+INFO 2025-07-21 15:42:15,919 middleware 58617 6190690304 API Response: 405 for POST /api/2fa/verify-required/
+WARNING 2025-07-21 15:42:15,919 basehttp 58617 6190690304 "POST /api/2fa/verify-required/ HTTP/1.1" 405 0
+INFO 2025-07-21 15:42:15,921 middleware 58617 6190690304 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 15:42:16,197 middleware 58617 6190690304 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 15:42:16,198 log 58617 6190690304 Unauthorized: /api/login/
+WARNING 2025-07-21 15:42:16,198 basehttp 58617 6190690304 "POST /api/login/ HTTP/1.1" 401 32
+ERROR 2025-07-21 15:42:31,203 log 58617 6190690304 Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/views/generic/base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py", line 48, in get
+    index_path = os.path.join(settings.REACT_BUILD_DIR, 'index.html')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/conf/__init__.py", line 83, in __getattr__
+    val = getattr(_wrapped, name)
+AttributeError: 'Settings' object has no attribute 'REACT_BUILD_DIR'
+ERROR 2025-07-21 15:42:31,205 basehttp 58617 6190690304 "GET /favicon.ico HTTP/1.1" 500 83445
+INFO 2025-07-21 15:43:00,493 middleware 58617 6190690304 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 15:43:00,863 middleware 58617 6190690304 API Response: 500 for POST /api/register/
+ERROR 2025-07-21 15:43:00,863 log 58617 6190690304 Internal Server Error: /api/register/
+ERROR 2025-07-21 15:43:00,864 basehttp 58617 6190690304 "POST /api/register/ HTTP/1.1" 500 50
+INFO 2025-07-21 15:46:50,635 autoreload 58617 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/database_router.py changed, reloading.
+INFO 2025-07-21 15:46:51,082 autoreload 58712 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:47:00,670 autoreload 58712 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 15:47:01,051 autoreload 58723 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:47:24,512 basehttp 58723 6130888704 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:47:25,835 middleware 58723 6130888704 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 15:47:25,838 middleware 58723 6130888704 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 15:47:25,839 basehttp 58723 6130888704 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 15:47:25,842 middleware 58723 6130888704 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+WARNING 2025-07-21 15:47:25,843 log 58723 6130888704 Method Not Allowed (POST): /api/2fa/verify-required/
+INFO 2025-07-21 15:47:25,843 middleware 58723 6130888704 API Response: 405 for POST /api/2fa/verify-required/
+WARNING 2025-07-21 15:47:25,844 basehttp 58723 6130888704 "POST /api/2fa/verify-required/ HTTP/1.1" 405 0
+INFO 2025-07-21 15:47:25,847 middleware 58723 6130888704 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 15:47:26,139 middleware 58723 6130888704 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 15:47:26,139 log 58723 6130888704 Unauthorized: /api/login/
+WARNING 2025-07-21 15:47:26,139 basehttp 58723 6130888704 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 15:48:37,672 basehttp 58723 6130888704 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:49:05,620 middleware 58723 6130888704 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 15:49:05,704 middleware 58723 6130888704 API Response: 500 for POST /api/register/
+ERROR 2025-07-21 15:49:05,705 log 58723 6130888704 Internal Server Error: /api/register/
+ERROR 2025-07-21 15:49:05,705 basehttp 58723 6130888704 "POST /api/register/ HTTP/1.1" 500 50
+INFO 2025-07-21 15:50:06,136 autoreload 58723 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/urls.py changed, reloading.
+INFO 2025-07-21 15:50:06,555 autoreload 58856 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:50:12,914 autoreload 58856 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:50:13,348 autoreload 58867 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:50:18,692 autoreload 58867 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:50:19,073 autoreload 58878 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:52:32,372 middleware 58878 6202060800 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 15:52:32,452 middleware 58878 6202060800 API Response: 500 for POST /api/register/
+ERROR 2025-07-21 15:52:32,453 log 58878 6202060800 Internal Server Error: /api/register/
+ERROR 2025-07-21 15:52:32,454 basehttp 58878 6202060800 "POST /api/register/ HTTP/1.1" 500 50
+INFO 2025-07-21 15:54:17,968 autoreload 61340 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:54:28,468 autoreload 58878 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:54:28,896 autoreload 61401 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:54:31,582 autoreload 61401 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:54:31,900 autoreload 61409 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:54:34,182 autoreload 61409 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:54:34,474 autoreload 61417 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:54:54,624 middleware 61417 6204731392 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 15:54:54,667 middleware 61417 6204731392 API Response: 200 for POST /api/register/
+INFO 2025-07-21 15:54:54,667 basehttp 61417 6204731392 "POST /api/register/ HTTP/1.1" 200 82
+INFO 2025-07-21 15:54:54,942 basehttp 61417 6204731392 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:55:35,474 middleware 61417 6204731392 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 15:55:35,477 middleware 61417 6204731392 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 15:55:35,479 basehttp 61417 6204731392 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 15:55:35,486 middleware 61417 6204731392 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 15:55:35,487 middleware 61417 6204731392 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 15:55:35,488 basehttp 61417 6204731392 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 15:55:35,491 middleware 61417 6204731392 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 15:55:35,795 middleware 61417 6204731392 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 15:55:35,796 log 61417 6204731392 Unauthorized: /api/login/
+WARNING 2025-07-21 15:55:35,796 basehttp 61417 6204731392 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 15:55:42,509 autoreload 61417 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 15:55:42,966 autoreload 61477 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:55:53,401 autoreload 61477 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:55:53,847 autoreload 61488 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:55:57,206 autoreload 61488 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:55:57,615 autoreload 61501 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:55:58,916 autoreload 61501 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:55:59,207 autoreload 61503 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:56:06,551 autoreload 61503 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 15:56:06,920 autoreload 61517 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:56:09,244 autoreload 61517 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 15:56:09,790 autoreload 61528 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:58:21,204 autoreload 61528 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:58:21,646 autoreload 61624 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:58:24,999 autoreload 61624 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:58:25,316 autoreload 61632 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:58:27,581 autoreload 61632 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 15:58:27,870 autoreload 61638 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:58:39,458 autoreload 61638 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/models.py changed, reloading.
+INFO 2025-07-21 15:58:39,843 autoreload 61655 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 15:59:14,299 basehttp 61655 6206533632 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 15:59:14,312 basehttp 61655 6223360000 "GET /static/assets/index-DjR91XC8.js HTTP/1.1" 304 0
+INFO 2025-07-21 15:59:14,312 basehttp 61655 6206533632 "GET /static/assets/index-CH61TETA.css HTTP/1.1" 304 0
+INFO 2025-07-21 15:59:14,364 middleware 61655 6206533632 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 15:59:14,364 middleware 61655 6223360000 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 15:59:14,365 middleware 61655 6206533632 API Response: 200 for GET /api/session/
+INFO 2025-07-21 15:59:14,365 basehttp 61655 6206533632 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 15:59:14,366 middleware 61655 6223360000 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 15:59:14,367 basehttp 61655 6223360000 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 15:59:14,940 basehttp 61655 6223360000 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:59:15,900 basehttp 61655 6223360000 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 15:59:19,658 basehttp 61655 6223360000 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:59:20,896 middleware 61655 6223360000 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 15:59:20,896 middleware 61655 6223360000 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 15:59:20,897 basehttp 61655 6223360000 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 15:59:20,900 middleware 61655 6223360000 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 15:59:20,903 middleware 61655 6223360000 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 15:59:20,904 basehttp 61655 6223360000 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 15:59:20,906 middleware 61655 6223360000 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 15:59:21,217 middleware 61655 6223360000 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 15:59:21,218 log 61655 6223360000 Unauthorized: /api/login/
+WARNING 2025-07-21 15:59:21,218 basehttp 61655 6223360000 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 15:59:23,881 basehttp 61655 6206533632 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 15:59:55,612 middleware 61655 6206533632 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 15:59:55,687 middleware 61655 6206533632 API Response: 200 for POST /api/register/
+INFO 2025-07-21 15:59:55,688 basehttp 61655 6206533632 "POST /api/register/ HTTP/1.1" 200 108
+INFO 2025-07-21 15:59:55,707 basehttp 61655 6206533632 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:00:24,662 middleware 61655 6206533632 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:00:24,664 middleware 61655 6206533632 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:00:24,665 basehttp 61655 6206533632 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:00:24,668 middleware 61655 6206533632 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 16:00:24,673 middleware 61655 6206533632 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 16:00:24,674 basehttp 61655 6206533632 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 16:00:24,681 middleware 61655 6206533632 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:00:24,964 middleware 61655 6206533632 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:00:24,964 log 61655 6206533632 Unauthorized: /api/login/
+WARNING 2025-07-21 16:00:24,964 basehttp 61655 6206533632 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:02:16,595 autoreload 61655 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:17,062 autoreload 61772 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:02:20,451 autoreload 61772 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:20,753 autoreload 61781 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:02:30,170 autoreload 61781 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:30,562 autoreload 61791 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:02:32,894 autoreload 61791 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:33,227 autoreload 61800 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:02:40,552 autoreload 61800 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:40,886 autoreload 61808 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:02:42,152 autoreload 61808 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:02:42,438 autoreload 61816 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:03:40,712 middleware 61816 6165590016 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:03:40,750 middleware 61816 6165590016 API Response: 302 for GET /api/verify-email/
+INFO 2025-07-21 16:03:40,750 basehttp 61816 6165590016 "GET /api/verify-email/?uid=MQ&token=ctasfv-49f8763ae6c67e4234d8fac2f2181b34 HTTP/1.1" 302 0
+INFO 2025-07-21 16:03:40,765 basehttp 61816 6165590016 "GET /login?verified=1 HTTP/1.1" 200 1349
+INFO 2025-07-21 16:03:40,981 middleware 61816 6165590016 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:03:40,981 middleware 61816 6182416384 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:03:40,982 middleware 61816 6165590016 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:03:40,983 middleware 61816 6182416384 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:03:40,983 basehttp 61816 6165590016 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:03:40,984 basehttp 61816 6182416384 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:03:41,053 basehttp 61816 6182416384 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:03:43,926 middleware 61816 6182416384 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:03:43,927 middleware 61816 6182416384 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:03:43,927 basehttp 61816 6182416384 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:03:43,930 middleware 61816 6182416384 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 16:03:43,931 middleware 61816 6182416384 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 16:03:43,932 basehttp 61816 6182416384 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 16:03:43,934 middleware 61816 6182416384 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:03:44,214 middleware 61816 6182416384 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:03:44,215 log 61816 6182416384 Unauthorized: /api/login/
+WARNING 2025-07-21 16:03:44,215 basehttp 61816 6182416384 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:03:55,871 middleware 61816 6165590016 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:03:55,872 middleware 61816 6165590016 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:03:55,872 basehttp 61816 6165590016 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:03:55,887 middleware 61816 6165590016 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 16:03:55,887 middleware 61816 6165590016 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 16:03:55,888 basehttp 61816 6165590016 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 16:03:55,890 middleware 61816 6165590016 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:03:56,162 middleware 61816 6165590016 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:03:56,162 log 61816 6165590016 Unauthorized: /api/login/
+WARNING 2025-07-21 16:03:56,162 basehttp 61816 6165590016 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:04:38,340 basehttp 61816 6165590016 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 200 1349
+INFO 2025-07-21 16:04:38,429 basehttp 61816 6165590016 "GET /static/assets/index-DjR91XC8.js.map HTTP/1.1" 200 4291398
+INFO 2025-07-21 16:04:41,024 autoreload 61816 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/job_scraper/models.py changed, reloading.
+INFO 2025-07-21 16:04:41,575 autoreload 61985 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:04:42,851 autoreload 61985 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/job_scraper/models.py changed, reloading.
+INFO 2025-07-21 16:04:43,149 autoreload 61990 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:07:19,248 autoreload 62715 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:07:23,121 middleware 62715 6203879424 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:07:23,123 middleware 62715 6203879424 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:07:23,123 basehttp 62715 6203879424 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:07:23,127 middleware 62715 6203879424 API Request: POST /api/2fa/verify-required/ from 127.0.0.1
+INFO 2025-07-21 16:07:23,128 middleware 62715 6203879424 API Response: 200 for POST /api/2fa/verify-required/
+INFO 2025-07-21 16:07:23,128 basehttp 62715 6203879424 "POST /api/2fa/verify-required/ HTTP/1.1" 200 58
+INFO 2025-07-21 16:07:23,130 middleware 62715 6203879424 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:07:23,428 middleware 62715 6203879424 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:07:23,429 log 62715 6203879424 Unauthorized: /api/login/
+WARNING 2025-07-21 16:07:23,429 basehttp 62715 6203879424 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:07:54,280 basehttp 62715 6203879424 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:07:54,495 middleware 62715 6203879424 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:07:54,496 middleware 62715 6203879424 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:07:54,497 middleware 62715 6220705792 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:07:54,499 middleware 62715 6220705792 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:07:54,501 basehttp 62715 6203879424 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:07:54,502 basehttp 62715 6220705792 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:07:54,872 basehttp 62715 6220705792 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:07:56,032 basehttp 62715 6220705792 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:07:58,286 basehttp 62715 6220705792 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:08:40,637 middleware 62715 6220705792 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:08:41,000 middleware 62715 6220705792 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:08:41,001 basehttp 62715 6220705792 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:08:41,021 basehttp 62715 6220705792 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:08:56,852 basehttp 62715 6220705792 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 200 1349
+INFO 2025-07-21 16:11:00,248 autoreload 62715 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/urls.py changed, reloading.
+INFO 2025-07-21 16:11:00,805 autoreload 62872 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:03,143 autoreload 62872 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/urls.py changed, reloading.
+INFO 2025-07-21 16:11:03,476 autoreload 62892 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:09,898 autoreload 62892 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:10,239 autoreload 62904 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:15,698 autoreload 62904 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:16,596 autoreload 62921 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:17,971 autoreload 62921 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:18,307 autoreload 62931 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:24,180 autoreload 62931 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:24,481 autoreload 62938 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:28,830 autoreload 62938 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:29,318 autoreload 62952 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:11:32,642 autoreload 62952 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:11:32,937 autoreload 62957 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:12:16,485 middleware 62957 6163197952 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:12:16,508 middleware 62957 6163197952 API Response: 400 for GET /api/verify-email/
+WARNING 2025-07-21 16:12:16,509 log 62957 6163197952 Bad Request: /api/verify-email/
+WARNING 2025-07-21 16:12:16,509 basehttp 62957 6163197952 "GET /api/verify-email/?uid=Mg&token=ctasug-3e54c1c68ba9c2e4e330f89061f90552 HTTP/1.1" 400 36
+INFO 2025-07-21 16:12:34,894 middleware 62957 6163197952 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:12:35,225 middleware 62957 6163197952 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:12:35,225 basehttp 62957 6163197952 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:12:43,549 middleware 62957 6163197952 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:12:43,801 middleware 62957 6163197952 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:12:43,801 log 62957 6163197952 Unauthorized: /api/login/
+WARNING 2025-07-21 16:12:43,802 basehttp 62957 6163197952 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:16:56,873 autoreload 63911 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:17:08,383 basehttp 63911 6193573888 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:08,413 basehttp 63911 6210400256 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:17:08,419 basehttp 63911 6193573888 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:17:08,464 middleware 63911 6193573888 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:17:08,465 middleware 63911 6210400256 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:17:08,468 middleware 63911 6193573888 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:17:08,469 basehttp 63911 6193573888 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:17:08,470 middleware 63911 6210400256 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:17:08,470 basehttp 63911 6210400256 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:17:09,023 basehttp 63911 6210400256 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:10,004 basehttp 63911 6210400256 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:11,702 basehttp 63911 6210400256 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:11,735 basehttp 63911 6193573888 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:17:11,737 basehttp 63911 6210400256 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:17:11,768 middleware 63911 6210400256 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:17:11,769 middleware 63911 6193573888 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:17:11,770 middleware 63911 6193573888 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:17:11,770 middleware 63911 6210400256 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:17:11,770 basehttp 63911 6193573888 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:17:11,771 basehttp 63911 6210400256 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:17:11,778 basehttp 63911 6210400256 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:13,293 basehttp 63911 6210400256 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:16,381 basehttp 63911 6210400256 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:16,396 basehttp 63911 6193573888 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 16:17:16,397 basehttp 63911 6210400256 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 16:17:16,406 middleware 63911 6210400256 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:17:16,406 middleware 63911 6193573888 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:17:16,407 middleware 63911 6210400256 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:17:16,408 basehttp 63911 6210400256 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:17:16,408 middleware 63911 6193573888 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:17:16,408 basehttp 63911 6193573888 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:17:16,421 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:17,932 basehttp 63911 6193573888 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:20,757 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:22,917 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:17:45,377 middleware 63911 6193573888 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:17:45,897 middleware 63911 6193573888 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:17:45,897 basehttp 63911 6193573888 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:17:45,928 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:18:47,525 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:19:18,526 middleware 63911 6193573888 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:19:18,826 middleware 63911 6193573888 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:19:18,827 basehttp 63911 6193573888 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:19:18,883 basehttp 63911 6193573888 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:20:46,490 autoreload 63911 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:20:47,199 autoreload 64267 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:20:48,621 autoreload 64267 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:20:48,907 autoreload 64274 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:22:45,144 autoreload 64274 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:22:45,728 autoreload 64386 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:22:51,300 autoreload 64386 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:22:51,697 autoreload 64398 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:22:55,041 autoreload 64398 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:22:55,347 autoreload 64404 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:22:56,626 autoreload 64404 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:22:56,902 autoreload 64408 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:23:46,847 autoreload 64408 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:23:47,287 autoreload 64425 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:23:58,540 basehttp 64425 6128939008 "GET /login?activation=required HTTP/1.1" 200 1349
+INFO 2025-07-21 16:23:58,577 basehttp 64425 6145765376 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:23:58,583 basehttp 64425 6128939008 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:23:58,632 middleware 64425 6128939008 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:23:58,632 middleware 64425 6145765376 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:23:58,634 middleware 64425 6128939008 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:23:58,635 middleware 64425 6145765376 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:23:58,636 basehttp 64425 6128939008 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:23:58,637 basehttp 64425 6145765376 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:23:58,662 basehttp 64425 6145765376 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:03,108 basehttp 64425 6128939008 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:08,456 basehttp 64425 6128939008 "GET /register HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:08,480 middleware 64425 6128939008 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:24:08,480 middleware 64425 6145765376 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:24:08,481 middleware 64425 6128939008 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:24:08,482 middleware 64425 6145765376 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:24:08,482 basehttp 64425 6128939008 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:24:08,482 basehttp 64425 6145765376 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:24:08,514 basehttp 64425 6145765376 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:12,478 basehttp 64425 6128939008 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:12,499 basehttp 64425 6145765376 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:24:12,504 basehttp 64425 6128939008 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:24:12,552 middleware 64425 6128939008 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:24:12,553 middleware 64425 6145765376 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:24:12,553 middleware 64425 6128939008 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:24:12,554 middleware 64425 6145765376 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:24:12,554 basehttp 64425 6145765376 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:24:12,555 basehttp 64425 6128939008 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:24:13,050 basehttp 64425 6128939008 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:14,090 basehttp 64425 6128939008 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:16,586 basehttp 64425 6128939008 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:16,606 basehttp 64425 6128939008 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:24:16,609 basehttp 64425 6145765376 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:24:16,647 middleware 64425 6145765376 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:24:16,647 middleware 64425 6128939008 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:24:16,648 middleware 64425 6128939008 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:24:16,648 middleware 64425 6145765376 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:24:16,649 basehttp 64425 6128939008 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:24:16,649 basehttp 64425 6145765376 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:24:16,656 basehttp 64425 6145765376 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:18,173 basehttp 64425 6145765376 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:19,416 basehttp 64425 6145765376 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:24:21,609 basehttp 64425 6128939008 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:25:04,635 middleware 64425 6128939008 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:25:09,348 middleware 64425 6128939008 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:25:09,349 basehttp 64425 6128939008 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:25:09,371 basehttp 64425 6128939008 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:25:24,308 middleware 64425 6128939008 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:25:24,345 middleware 64425 6128939008 API Response: 200 for GET /api/verify-email/
+INFO 2025-07-21 16:25:24,345 basehttp 64425 6128939008 "GET /api/verify-email/?uid=Ng&token=ctatls-5d26f303b50c0b9963219b0bb62d49b2 HTTP/1.1" 200 5596
+INFO 2025-07-21 16:25:24,417 basehttp 64425 6162591744 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 200 817
+INFO 2025-07-21 16:25:24,418 basehttp 64425 6145765376 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 200 3426
+INFO 2025-07-21 16:25:24,420 basehttp 64425 6179418112 "GET /static/rest_framework/css/default.css HTTP/1.1" 200 1152
+INFO 2025-07-21 16:25:24,421 basehttp 64425 6213070848 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 200 3796
+INFO 2025-07-21 16:25:24,425 basehttp 64425 6162591744 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 200 1793
+INFO 2025-07-21 16:25:24,425 basehttp 64425 6179418112 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 200 13632
+INFO 2025-07-21 16:25:24,426 basehttp 64425 6213070848 "GET /static/rest_framework/js/default.js HTTP/1.1" 200 1268
+INFO 2025-07-21 16:25:24,429 basehttp 64425 6196244480 "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 200 87533
+INFO 2025-07-21 16:25:24,431 basehttp 64425 6128939008 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 200 121457
+INFO 2025-07-21 16:25:24,431 basehttp 64425 6145765376 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 200 39680
+INFO 2025-07-21 16:25:24,431 basehttp 64425 6179418112 "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 200 59
+INFO 2025-07-21 16:25:24,439 basehttp 64425 6145765376 "GET /static/rest_framework/img/grid.png HTTP/1.1" 200 1458
+INFO 2025-07-21 16:25:24,484 basehttp 64425 6145765376 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:25:53,766 middleware 64425 6128939008 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:25:53,787 middleware 64425 6128939008 API Response: 200 for GET /api/verify-email/
+INFO 2025-07-21 16:25:53,788 basehttp 64425 6128939008 "GET /api/verify-email/?uid=Ng&token=ctatls-5d26f303b50c0b9963219b0bb62d49b2 HTTP/1.1" 200 5591
+INFO 2025-07-21 16:25:53,909 basehttp 64425 6128939008 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:26:57,823 autoreload 64425 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:26:58,856 autoreload 64514 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:27:03,483 autoreload 64514 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:27:03,790 autoreload 64524 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:27:47,698 basehttp 64524 6170619904 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:28:10,874 middleware 64524 6170619904 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:28:15,309 middleware 64524 6170619904 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:28:15,310 basehttp 64524 6170619904 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:28:15,371 basehttp 64524 6170619904 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:28:24,662 middleware 64524 6170619904 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:28:24,687 middleware 64524 6170619904 API Response: 302 for GET /api/verify-email/
+INFO 2025-07-21 16:28:24,687 basehttp 64524 6170619904 "GET /api/verify-email/?uid=Nw&token=ctatqz-3d60faf9221c05713ab4ae60dad54af3 HTTP/1.1" 302 0
+INFO 2025-07-21 16:28:24,690 basehttp 64524 6170619904 "GET /login?verified=1 HTTP/1.1" 200 1349
+INFO 2025-07-21 16:28:24,750 basehttp 64524 6170619904 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 16:28:24,751 basehttp 64524 6187446272 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 16:28:24,795 middleware 64524 6170619904 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:28:24,795 middleware 64524 6187446272 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:28:24,796 middleware 64524 6187446272 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:28:24,797 middleware 64524 6170619904 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:28:24,797 basehttp 64524 6187446272 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:28:24,797 basehttp 64524 6170619904 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:28:24,907 basehttp 64524 6170619904 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:28:28,105 middleware 64524 6170619904 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:28:28,105 middleware 64524 6170619904 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:28:28,106 basehttp 64524 6170619904 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:28:28,109 middleware 64524 6170619904 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:28:28,406 middleware 64524 6170619904 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:28:28,407 log 64524 6170619904 Unauthorized: /api/login/
+WARNING 2025-07-21 16:28:28,407 basehttp 64524 6170619904 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:28:34,338 middleware 64524 6170619904 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:28:34,339 middleware 64524 6170619904 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:28:34,340 basehttp 64524 6170619904 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:28:34,344 middleware 64524 6170619904 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:28:34,627 middleware 64524 6170619904 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:28:34,628 log 64524 6170619904 Unauthorized: /api/login/
+WARNING 2025-07-21 16:28:34,628 basehttp 64524 6170619904 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:29:24,120 middleware 64524 6170619904 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:29:28,889 middleware 64524 6170619904 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:29:28,889 basehttp 64524 6170619904 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:29:52,106 middleware 64524 6170619904 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:29:52,374 middleware 64524 6170619904 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:29:52,374 log 64524 6170619904 Unauthorized: /api/login/
+WARNING 2025-07-21 16:29:52,374 basehttp 64524 6170619904 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:30:10,358 autoreload 64524 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:30:10,819 autoreload 65065 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:30:14,293 autoreload 65065 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:30:14,717 autoreload 65080 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:30:16,484 autoreload 65080 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:30:16,827 autoreload 65086 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:30:41,664 middleware 65086 6128873472 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:30:41,665 middleware 65086 6128873472 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:30:41,666 basehttp 65086 6128873472 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:30:41,668 middleware 65086 6128873472 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:30:42,003 middleware 65086 6128873472 API Response: 500 for POST /api/login/
+ERROR 2025-07-21 16:30:42,004 log 65086 6128873472 Internal Server Error: /api/login/
+ERROR 2025-07-21 16:30:42,004 basehttp 65086 6128873472 "POST /api/login/ HTTP/1.1" 500 25
+INFO 2025-07-21 16:31:41,613 basehttp 65086 6128873472 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:32:14,991 middleware 65086 6128873472 API Request: POST /api/register/ from 127.0.0.1
+INFO 2025-07-21 16:32:19,320 middleware 65086 6128873472 API Response: 201 for POST /api/register/
+INFO 2025-07-21 16:32:19,321 basehttp 65086 6128873472 "POST /api/register/ HTTP/1.1" 201 91
+INFO 2025-07-21 16:32:19,345 basehttp 65086 6128873472 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:32:31,670 middleware 65086 6128873472 API Request: GET /api/verify-email/ from 127.0.0.1
+INFO 2025-07-21 16:32:31,690 middleware 65086 6128873472 API Response: 302 for GET /api/verify-email/
+INFO 2025-07-21 16:32:31,690 basehttp 65086 6128873472 "GET /api/verify-email/?uid=OQ&token=ctatxr-07132b0ad3563dc9c2e3d5e455396d59 HTTP/1.1" 302 0
+INFO 2025-07-21 16:32:31,694 basehttp 65086 6128873472 "GET /login?verified=1 HTTP/1.1" 200 1349
+INFO 2025-07-21 16:32:31,766 basehttp 65086 6145699840 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 16:32:31,766 basehttp 65086 6128873472 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 16:32:31,812 middleware 65086 6128873472 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:32:31,812 middleware 65086 6145699840 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:32:31,813 middleware 65086 6145699840 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:32:31,814 middleware 65086 6128873472 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:32:31,814 basehttp 65086 6145699840 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:32:31,814 basehttp 65086 6128873472 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:32:31,958 basehttp 65086 6128873472 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:32:34,307 middleware 65086 6128873472 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:32:34,308 middleware 65086 6128873472 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:32:34,309 basehttp 65086 6128873472 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:32:34,312 middleware 65086 6128873472 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:32:34,597 middleware 65086 6128873472 API Response: 500 for POST /api/login/
+ERROR 2025-07-21 16:32:34,597 log 65086 6128873472 Internal Server Error: /api/login/
+ERROR 2025-07-21 16:32:34,597 basehttp 65086 6128873472 "POST /api/login/ HTTP/1.1" 500 25
+INFO 2025-07-21 16:34:04,932 autoreload 65086 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:34:05,476 autoreload 65185 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:34:07,796 autoreload 65185 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:34:08,100 autoreload 65199 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:34:10,372 autoreload 65199 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:34:10,654 autoreload 65201 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:34:19,865 middleware 65201 6158725120 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:34:20,118 middleware 65201 6158725120 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:34:20,119 log 65201 6158725120 Unauthorized: /api/login/
+WARNING 2025-07-21 16:34:20,119 basehttp 65201 6158725120 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:36:04,797 middleware 65201 6158725120 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:36:05,057 middleware 65201 6158725120 API Response: 500 for POST /api/login/
+ERROR 2025-07-21 16:36:05,058 log 65201 6158725120 Internal Server Error: /api/login/
+ERROR 2025-07-21 16:36:05,058 basehttp 65201 6158725120 "POST /api/login/ HTTP/1.1" 500 25
+INFO 2025-07-21 16:36:15,622 autoreload 65201 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:36:16,465 autoreload 66353 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:36:19,806 autoreload 66353 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:36:20,128 autoreload 66365 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:36:22,462 autoreload 66365 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:36:22,760 autoreload 66369 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:36:31,743 middleware 66369 6193688576 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:36:32,000 middleware 66369 6193688576 API Response: 500 for POST /api/login/
+ERROR 2025-07-21 16:36:32,000 log 66369 6193688576 Internal Server Error: /api/login/
+ERROR 2025-07-21 16:36:32,001 basehttp 66369 6193688576 "POST /api/login/ HTTP/1.1" 500 173
+INFO 2025-07-21 16:36:47,504 autoreload 66369 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:36:47,946 autoreload 66607 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:36:51,312 autoreload 66607 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:36:51,684 autoreload 66621 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:37:19,981 autoreload 67249 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:37:27,316 middleware 67249 6133575680 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:37:27,573 middleware 67249 6133575680 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:37:27,575 basehttp 67249 6133575680 "POST /api/login/ HTTP/1.1" 200 124
+INFO 2025-07-21 16:37:37,314 middleware 67249 6133575680 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:37:37,316 middleware 67249 6133575680 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:37:37,317 basehttp 67249 6133575680 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:37:37,324 middleware 67249 6133575680 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:37:37,600 middleware 67249 6133575680 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:37:37,601 basehttp 67249 6133575680 "POST /api/login/ HTTP/1.1" 200 124
+INFO 2025-07-21 16:37:37,609 middleware 67249 6133575680 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:37:37,629 middleware 67249 6133575680 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:37:37,630 basehttp 67249 6133575680 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:37:37,696 basehttp 67249 6133575680 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:37:39,819 middleware 67249 6133575680 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:37:39,819 middleware 67249 6133575680 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:37:39,819 basehttp 67249 6133575680 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:37:39,821 middleware 67249 6133575680 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:37:40,069 middleware 67249 6133575680 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:37:40,070 basehttp 67249 6133575680 "POST /api/login/ HTTP/1.1" 200 124
+INFO 2025-07-21 16:37:40,075 middleware 67249 6133575680 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:37:40,085 middleware 67249 6133575680 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:37:40,085 basehttp 67249 6133575680 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:37:40,101 basehttp 67249 6133575680 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:38:40,562 autoreload 67249 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:38:41,117 autoreload 67570 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:38:44,555 autoreload 67570 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:38:44,960 autoreload 67581 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:38:46,288 autoreload 67581 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:38:46,585 autoreload 67584 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:38:57,871 middleware 67584 6193295360 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:38:58,139 middleware 67584 6193295360 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:38:58,140 basehttp 67584 6193295360 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:39:04,735 middleware 67584 6193295360 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:04,745 middleware 67584 6193295360 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:04,745 basehttp 67584 6193295360 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:19,799 middleware 67584 6193295360 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:39:19,800 middleware 67584 6193295360 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:39:19,801 basehttp 67584 6193295360 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:39:19,806 middleware 67584 6193295360 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:39:20,072 middleware 67584 6193295360 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:39:20,074 basehttp 67584 6193295360 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:39:20,082 middleware 67584 6193295360 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:20,094 middleware 67584 6193295360 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:20,094 basehttp 67584 6193295360 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:20,173 basehttp 67584 6193295360 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:24,368 basehttp 67584 6193295360 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:24,418 basehttp 67584 6193295360 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 16:39:24,418 basehttp 67584 6210121728 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 16:39:24,477 middleware 67584 6210121728 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:24,479 middleware 67584 6193295360 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:39:24,479 middleware 67584 6193295360 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:39:24,479 basehttp 67584 6193295360 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:39:24,497 middleware 67584 6210121728 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:24,498 basehttp 67584 6210121728 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:25,892 basehttp 67584 6210121728 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:25,993 basehttp 67584 6210121728 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:28,035 basehttp 67584 6193295360 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:28,059 basehttp 67584 6210121728 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:39:28,061 basehttp 67584 6193295360 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:39:28,087 middleware 67584 6193295360 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:28,087 middleware 67584 6210121728 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:39:28,088 middleware 67584 6210121728 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:39:28,088 basehttp 67584 6210121728 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:39:28,098 basehttp 67584 6210121728 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:28,103 middleware 67584 6193295360 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:28,103 basehttp 67584 6193295360 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:29,612 basehttp 67584 6193295360 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:31,365 basehttp 67584 6193295360 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:32,587 middleware 67584 6193295360 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:39:32,587 middleware 67584 6193295360 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:39:32,588 basehttp 67584 6193295360 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:39:32,591 middleware 67584 6193295360 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:39:32,885 middleware 67584 6193295360 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:39:32,887 basehttp 67584 6193295360 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:39:32,892 middleware 67584 6193295360 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:32,903 middleware 67584 6193295360 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:32,904 basehttp 67584 6193295360 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:32,916 basehttp 67584 6193295360 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:39:40,218 middleware 67584 6210121728 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:39:40,218 middleware 67584 6210121728 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:39:40,219 basehttp 67584 6210121728 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:39:40,222 middleware 67584 6210121728 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:39:40,512 middleware 67584 6210121728 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:39:40,514 basehttp 67584 6210121728 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:39:40,520 middleware 67584 6210121728 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:39:40,532 middleware 67584 6210121728 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:39:40,532 basehttp 67584 6210121728 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:39:40,549 basehttp 67584 6210121728 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:41:26,413 autoreload 67584 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:41:26,917 autoreload 68065 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:41:30,261 autoreload 68065 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:41:30,592 autoreload 68077 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:41:31,925 autoreload 68077 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:41:32,558 autoreload 68079 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:41:56,513 basehttp 68079 6160674816 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:41:56,558 basehttp 68079 6160674816 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 16:41:56,558 basehttp 68079 6177501184 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 16:41:56,607 middleware 68079 6177501184 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:41:56,607 middleware 68079 6160674816 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:41:56,609 middleware 68079 6160674816 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:41:56,610 basehttp 68079 6160674816 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:41:56,639 middleware 68079 6177501184 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:41:56,639 basehttp 68079 6177501184 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:41:57,274 basehttp 68079 6177501184 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:41:58,146 basehttp 68079 6160674816 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:42:00,694 basehttp 68079 6160674816 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 16:42:00,747 basehttp 68079 6177501184 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 16:42:00,758 basehttp 68079 6160674816 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 16:42:00,797 middleware 68079 6160674816 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:42:00,807 middleware 68079 6177501184 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:42:00,817 middleware 68079 6177501184 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:42:00,818 basehttp 68079 6194327552 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:42:00,818 basehttp 68079 6177501184 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:42:00,833 middleware 68079 6160674816 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:42:00,834 basehttp 68079 6160674816 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:42:02,328 basehttp 68079 6160674816 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 16:42:04,335 basehttp 68079 6160674816 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:42:05,652 middleware 68079 6160674816 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 16:42:05,653 middleware 68079 6160674816 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 16:42:05,654 basehttp 68079 6160674816 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 16:42:05,657 middleware 68079 6160674816 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:42:05,971 middleware 68079 6160674816 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:42:05,973 basehttp 68079 6160674816 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:42:05,979 middleware 68079 6160674816 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:42:05,996 middleware 68079 6160674816 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:42:05,996 basehttp 68079 6160674816 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:42:06,015 basehttp 68079 6160674816 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 16:43:46,958 middleware 68079 6160674816 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:43:46,959 middleware 68079 6160674816 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:43:46,959 basehttp 68079 6160674816 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:44:06,618 autoreload 68079 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:44:07,124 autoreload 68280 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:44:10,559 autoreload 68280 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:44:10,936 autoreload 68294 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:44:12,266 autoreload 68294 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:44:12,558 autoreload 68296 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:44:18,658 middleware 68296 6196719616 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:44:18,939 middleware 68296 6196719616 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:44:18,941 basehttp 68296 6196719616 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:44:23,571 middleware 68296 6196719616 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:44:23,587 middleware 68296 6196719616 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:44:23,587 basehttp 68296 6196719616 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:44:36,309 autoreload 68296 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:44:36,718 autoreload 68689 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:44:48,085 autoreload 69184 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:44:54,721 middleware 68689 6136426496 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:44:54,983 middleware 68689 6136426496 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:44:54,985 basehttp 68689 6136426496 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:44:59,392 middleware 68689 6136426496 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:44:59,416 middleware 68689 6136426496 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:44:59,419 basehttp 68689 6136426496 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:45:08,953 autoreload 68689 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:45:09,741 autoreload 69612 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:45:11,147 autoreload 69612 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:45:11,476 autoreload 69622 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:45:28,150 middleware 69622 6130757632 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:45:28,435 middleware 69622 6130757632 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:45:28,437 basehttp 69622 6130757632 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:45:33,836 middleware 69622 6130757632 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:45:33,863 middleware 69622 6130757632 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:45:33,865 basehttp 69622 6130757632 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:45:53,587 autoreload 69622 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:45:54,065 autoreload 70522 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:45:56,410 autoreload 70522 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:45:56,750 autoreload 70531 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:45:58,071 autoreload 70531 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:45:58,368 autoreload 70533 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:46:07,059 middleware 70533 6196113408 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:46:07,312 middleware 70533 6196113408 API Response: 401 for POST /api/login/
+WARNING 2025-07-21 16:46:07,313 log 70533 6196113408 Unauthorized: /api/login/
+WARNING 2025-07-21 16:46:07,314 basehttp 70533 6196113408 "POST /api/login/ HTTP/1.1" 401 32
+INFO 2025-07-21 16:46:18,093 autoreload 70533 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:46:18,544 autoreload 70773 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:46:19,829 autoreload 70773 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 16:46:20,105 autoreload 70777 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:46:36,741 autoreload 70777 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:46:37,193 autoreload 70787 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:46:40,540 autoreload 70787 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:46:41,040 autoreload 70803 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:46:42,354 autoreload 70803 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:46:42,661 autoreload 70807 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:47:12,296 middleware 70807 6136344576 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 16:47:12,565 middleware 70807 6136344576 API Response: 200 for POST /api/login/
+INFO 2025-07-21 16:47:12,567 basehttp 70807 6136344576 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 16:47:19,347 middleware 70807 6136344576 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:47:19,361 middleware 70807 6136344576 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:47:19,362 basehttp 70807 6136344576 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:47:39,250 autoreload 70807 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:47:39,673 autoreload 72115 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:47:43,079 autoreload 72115 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:47:43,427 autoreload 72124 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:47:44,692 autoreload 72124 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 16:47:45,401 autoreload 72126 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 16:47:50,669 middleware 72126 6128971776 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 16:47:50,683 middleware 72126 6128971776 API Response: 200 for GET /api/session/
+INFO 2025-07-21 16:47:50,685 basehttp 72126 6128971776 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 16:48:01,962 autoreload 72126 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/database_router.py changed, reloading.
+INFO 2025-07-21 16:48:02,411 autoreload 72290 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 17:57:46,192 autoreload 73020 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 17:58:02,698 basehttp 72290 6189903872 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:02,716 basehttp 72290 6189903872 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 304 0
+INFO 2025-07-21 17:58:02,717 basehttp 72290 6206730240 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 304 0
+INFO 2025-07-21 17:58:02,767 middleware 72290 6206730240 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 17:58:02,767 middleware 72290 6189903872 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 17:58:02,768 middleware 72290 6189903872 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 17:58:02,784 basehttp 72290 6189903872 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 17:58:02,786 middleware 72290 6206730240 API Response: 200 for GET /api/session/
+INFO 2025-07-21 17:58:02,788 basehttp 72290 6206730240 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 17:58:02,972 basehttp 72290 6206730240 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:04,316 basehttp 72290 6206730240 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:07,322 basehttp 72290 6206730240 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:07,350 basehttp 72290 6206730240 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 17:58:07,352 basehttp 72290 6189903872 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 17:58:07,380 middleware 72290 6189903872 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 17:58:07,380 middleware 72290 6206730240 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 17:58:07,381 middleware 72290 6206730240 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 17:58:07,397 middleware 72290 6189903872 API Response: 200 for GET /api/session/
+INFO 2025-07-21 17:58:07,398 basehttp 72290 6206730240 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 17:58:07,399 basehttp 72290 6189903872 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 17:58:07,402 basehttp 72290 6223556608 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:08,926 basehttp 72290 6223556608 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:10,826 basehttp 72290 6223556608 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 17:58:12,543 middleware 72290 6189903872 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 17:58:12,544 middleware 72290 6189903872 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 17:58:12,562 basehttp 72290 6189903872 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 17:58:12,564 middleware 72290 6189903872 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 17:58:12,836 middleware 72290 6189903872 API Response: 200 for POST /api/login/
+INFO 2025-07-21 17:58:12,837 basehttp 72290 6189903872 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 17:58:12,844 middleware 72290 6189903872 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 17:58:12,857 middleware 72290 6189903872 API Response: 200 for GET /api/session/
+INFO 2025-07-21 17:58:12,859 basehttp 72290 6189903872 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 17:58:12,894 basehttp 72290 6189903872 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:00:04,987 autoreload 72290 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 18:00:05,419 autoreload 73911 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:00:21,351 middleware 73911 6158331904 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 18:00:21,620 middleware 73911 6158331904 API Response: 200 for POST /api/login/
+INFO 2025-07-21 18:00:21,621 basehttp 73911 6158331904 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 18:00:27,583 middleware 73911 6158331904 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:00:27,599 middleware 73911 6158331904 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:00:27,600 basehttp 73911 6158331904 "GET /api/session/ HTTP/1.1" 200 37
+INFO 2025-07-21 18:00:43,784 autoreload 73911 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/accounts/views.py changed, reloading.
+INFO 2025-07-21 18:00:44,405 autoreload 74819 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:00:51,532 middleware 74819 6156120064 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:00:51,552 middleware 74819 6156120064 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:00:51,554 basehttp 74819 6156120064 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:01:16,843 basehttp 74819 6156120064 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:16,905 middleware 74819 6156120064 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:01:16,905 middleware 74819 6172946432 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 18:01:16,907 middleware 74819 6172946432 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 18:01:16,927 basehttp 74819 6172946432 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 18:01:16,931 middleware 74819 6156120064 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:01:16,933 basehttp 74819 6156120064 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:01:17,573 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:18,432 middleware 74819 6156120064 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:01:18,455 middleware 74819 6156120064 API Response: 403 for GET /api/photos/
+WARNING 2025-07-21 18:01:18,458 log 74819 6156120064 Forbidden: /api/photos/
+WARNING 2025-07-21 18:01:18,458 basehttp 74819 6156120064 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:01:18,461 basehttp 74819 6172946432 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:20,660 basehttp 74819 6172946432 "GET / HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:20,692 basehttp 74819 6172946432 "GET /static/assets/index-DjIm7oVp.css HTTP/1.1" 200 98312
+INFO 2025-07-21 18:01:20,698 basehttp 74819 6156120064 "GET /static/assets/index-BEpF2KWW.js HTTP/1.1" 200 1088006
+INFO 2025-07-21 18:01:20,727 middleware 74819 6156120064 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:01:20,727 middleware 74819 6172946432 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 18:01:20,729 middleware 74819 6172946432 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 18:01:20,747 basehttp 74819 6172946432 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 18:01:20,748 middleware 74819 6156120064 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:01:20,751 basehttp 74819 6156120064 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:01:20,754 basehttp 74819 6189772800 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:22,238 middleware 74819 6189772800 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:01:22,258 middleware 74819 6189772800 API Response: 403 for GET /api/photos/
+WARNING 2025-07-21 18:01:22,261 log 74819 6189772800 Forbidden: /api/photos/
+WARNING 2025-07-21 18:01:22,262 basehttp 74819 6189772800 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:01:22,268 basehttp 74819 6156120064 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:25,655 middleware 74819 6156120064 API Request: POST /api/logout/ from 127.0.0.1
+INFO 2025-07-21 18:01:25,674 middleware 74819 6156120064 API Response: 200 for POST /api/logout/
+INFO 2025-07-21 18:01:25,675 basehttp 74819 6156120064 "POST /api/logout/ HTTP/1.1" 200 38
+INFO 2025-07-21 18:01:29,487 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:30,367 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:31,876 basehttp 74819 6156120064 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:32,821 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:34,291 middleware 74819 6156120064 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 18:01:34,292 middleware 74819 6156120064 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 18:01:34,292 basehttp 74819 6156120064 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 18:01:34,295 middleware 74819 6156120064 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 18:01:34,592 middleware 74819 6156120064 API Response: 200 for POST /api/login/
+INFO 2025-07-21 18:01:34,593 basehttp 74819 6156120064 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 18:01:34,598 middleware 74819 6156120064 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:01:34,611 middleware 74819 6156120064 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:01:34,612 basehttp 74819 6156120064 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:01:34,637 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:36,130 middleware 74819 6156120064 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:01:36,149 middleware 74819 6156120064 API Response: 403 for GET /api/photos/
+INFO 2025-07-21 18:01:36,151 basehttp 74819 6189772800 "GET /placeholder.svg HTTP/1.1" 200 1349
+WARNING 2025-07-21 18:01:36,152 log 74819 6156120064 Forbidden: /api/photos/
+WARNING 2025-07-21 18:01:36,152 basehttp 74819 6156120064 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:01:47,318 basehttp 74819 6156120064 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:48,827 middleware 74819 6156120064 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:01:48,844 middleware 74819 6156120064 API Response: 403 for GET /api/photos/
+WARNING 2025-07-21 18:01:48,846 log 74819 6156120064 Forbidden: /api/photos/
+WARNING 2025-07-21 18:01:48,847 basehttp 74819 6156120064 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:01:48,853 basehttp 74819 6189772800 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:51,620 middleware 74819 6189772800 API Request: POST /api/logout/ from 127.0.0.1
+INFO 2025-07-21 18:01:51,639 middleware 74819 6189772800 API Response: 200 for POST /api/logout/
+INFO 2025-07-21 18:01:51,640 basehttp 74819 6189772800 "POST /api/logout/ HTTP/1.1" 200 38
+INFO 2025-07-21 18:01:51,651 basehttp 74819 6189772800 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:01:53,171 basehttp 74819 6189772800 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:03:17,437 basehttp 74819 6189772800 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:03:18,554 middleware 74819 6189772800 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 18:03:18,555 middleware 74819 6189772800 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 18:03:18,556 basehttp 74819 6189772800 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 18:03:18,558 middleware 74819 6189772800 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 18:03:18,843 middleware 74819 6189772800 API Response: 200 for POST /api/login/
+INFO 2025-07-21 18:03:18,845 basehttp 74819 6189772800 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 18:03:18,850 middleware 74819 6189772800 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:03:18,865 middleware 74819 6189772800 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:03:18,866 basehttp 74819 6189772800 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:03:18,906 basehttp 74819 6189772800 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:03:20,383 middleware 74819 6189772800 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:03:20,403 basehttp 74819 6156120064 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:03:20,409 middleware 74819 6189772800 API Response: 403 for GET /api/photos/
+WARNING 2025-07-21 18:03:20,411 log 74819 6189772800 Forbidden: /api/photos/
+WARNING 2025-07-21 18:03:20,411 basehttp 74819 6189772800 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:03:55,490 middleware 74819 6189772800 API Request: POST /api/logout/ from 127.0.0.1
+INFO 2025-07-21 18:03:55,529 middleware 74819 6189772800 API Response: 200 for POST /api/logout/
+INFO 2025-07-21 18:03:55,530 basehttp 74819 6189772800 "POST /api/logout/ HTTP/1.1" 200 38
+INFO 2025-07-21 18:03:55,546 basehttp 74819 6189772800 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:03:57,061 basehttp 74819 6189772800 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:05:01,090 autoreload 74819 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 18:05:01,715 autoreload 75439 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:05:03,026 autoreload 75439 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 18:05:03,352 autoreload 75449 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:05:29,266 autoreload 75449 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:05:29,699 autoreload 75480 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:05:47,726 autoreload 75480 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/notifications_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:05:48,214 autoreload 75508 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:06:01,182 autoreload 75508 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:06:01,593 autoreload 75542 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:06:21,498 autoreload 75542 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/notifications_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:06:21,982 autoreload 75561 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:08:06,626 autoreload 75561 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/urls.py changed, reloading.
+INFO 2025-07-21 18:08:07,070 autoreload 75651 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:14:01,623 autoreload 75651 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/settings.py changed, reloading.
+INFO 2025-07-21 18:14:02,184 autoreload 86677 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:14:51,702 basehttp 86677 6159478784 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:14:53,065 middleware 86677 6159478784 API Request: GET /api/csrf/ from 127.0.0.1
+INFO 2025-07-21 18:14:53,066 middleware 86677 6159478784 API Response: 200 for GET /api/csrf/
+INFO 2025-07-21 18:14:53,067 basehttp 86677 6159478784 "GET /api/csrf/ HTTP/1.1" 200 30
+INFO 2025-07-21 18:14:53,069 middleware 86677 6159478784 API Request: POST /api/login/ from 127.0.0.1
+INFO 2025-07-21 18:14:53,600 middleware 86677 6159478784 API Response: 200 for POST /api/login/
+INFO 2025-07-21 18:14:53,604 basehttp 86677 6159478784 "POST /api/login/ HTTP/1.1" 200 162
+INFO 2025-07-21 18:14:53,613 middleware 86677 6159478784 API Request: GET /api/session/ from 127.0.0.1
+INFO 2025-07-21 18:14:53,631 middleware 86677 6159478784 API Response: 200 for GET /api/session/
+INFO 2025-07-21 18:14:53,633 basehttp 86677 6159478784 "GET /api/session/ HTTP/1.1" 200 956
+INFO 2025-07-21 18:14:53,690 basehttp 86677 6159478784 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:14:55,153 middleware 86677 6159478784 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:14:55,168 middleware 86677 6159478784 API Response: 403 for GET /api/photos/
+INFO 2025-07-21 18:14:55,172 basehttp 86677 6176305152 "GET /placeholder.svg HTTP/1.1" 200 1349
+WARNING 2025-07-21 18:14:55,179 log 86677 6159478784 Forbidden: /api/photos/
+WARNING 2025-07-21 18:14:55,180 basehttp 86677 6159478784 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:14:58,399 basehttp 86677 6159478784 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:14:59,879 middleware 86677 6159478784 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:14:59,915 middleware 86677 6159478784 API Response: 403 for GET /api/photos/
+WARNING 2025-07-21 18:14:59,918 log 86677 6159478784 Forbidden: /api/photos/
+WARNING 2025-07-21 18:14:59,918 basehttp 86677 6159478784 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:14:59,933 basehttp 86677 6176305152 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:15:03,974 basehttp 86677 6159478784 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:15:05,428 middleware 86677 6159478784 API Request: GET /api/photos/ from 127.0.0.1
+INFO 2025-07-21 18:15:05,449 middleware 86677 6159478784 API Response: 403 for GET /api/photos/
+INFO 2025-07-21 18:15:05,449 basehttp 86677 6176305152 "GET /placeholder.svg HTTP/1.1" 200 1349
+WARNING 2025-07-21 18:15:05,453 log 86677 6159478784 Forbidden: /api/photos/
+WARNING 2025-07-21 18:15:05,453 basehttp 86677 6159478784 "GET /api/photos/?photo_type=profile HTTP/1.1" 403 58
+INFO 2025-07-21 18:15:07,868 middleware 86677 6159478784 API Request: POST /api/logout/ from 127.0.0.1
+INFO 2025-07-21 18:15:07,882 middleware 86677 6159478784 API Response: 200 for POST /api/logout/
+INFO 2025-07-21 18:15:07,882 basehttp 86677 6159478784 "POST /api/logout/ HTTP/1.1" 200 38
+INFO 2025-07-21 18:15:07,892 basehttp 86677 6159478784 "GET /favicon.ico HTTP/1.1" 200 1349
+INFO 2025-07-21 18:15:09,400 basehttp 86677 6159478784 "GET /placeholder.svg HTTP/1.1" 200 1349
+INFO 2025-07-21 18:16:08,102 autoreload 86677 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/urls.py changed, reloading.
+INFO 2025-07-21 18:16:08,673 autoreload 86868 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:16:09,981 autoreload 86868 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/hire_voo_ai/urls.py changed, reloading.
+INFO 2025-07-21 18:16:10,308 autoreload 86872 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:16:23,767 autoreload 86872 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:16:24,127 autoreload 86986 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:16:26,435 autoreload 86986 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:16:26,756 autoreload 86993 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:16:36,186 autoreload 86993 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:16:36,675 autoreload 87008 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:16:37,997 autoreload 87008 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:16:38,311 autoreload 87012 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:01,600 autoreload 87012 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:18:02,183 autoreload 87228 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:03,537 autoreload 87228 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:18:03,835 autoreload 87235 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:21,422 autoreload 87235 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:18:21,896 autoreload 87257 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:25,244 autoreload 87257 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/models.py changed, reloading.
+INFO 2025-07-21 18:18:25,553 autoreload 87264 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:36,939 autoreload 87264 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:18:37,400 autoreload 87278 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:39,743 autoreload 87278 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:18:40,462 autoreload 87287 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:49,894 autoreload 87287 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:18:50,365 autoreload 87297 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:18:52,840 autoreload 87297 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/admin.py changed, reloading.
+INFO 2025-07-21 18:18:53,171 autoreload 87304 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:19:11,694 autoreload 87304 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/views.py changed, reloading.
+INFO 2025-07-21 18:19:12,180 autoreload 87320 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:19:14,493 autoreload 87320 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/views.py changed, reloading.
+INFO 2025-07-21 18:19:14,788 autoreload 87330 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:19:47,641 autoreload 87330 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/urls.py changed, reloading.
+INFO 2025-07-21 18:19:48,149 autoreload 87363 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:19:50,456 autoreload 87363 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/urls.py changed, reloading.
+INFO 2025-07-21 18:19:50,756 autoreload 87370 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:20:01,324 autoreload 87370 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/urls.py changed, reloading.
+INFO 2025-07-21 18:20:01,772 autoreload 87384 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:20:04,084 autoreload 87384 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/pricing_dashboard/urls.py changed, reloading.
+INFO 2025-07-21 18:20:04,408 autoreload 87396 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:20:55,204 autoreload 87396 8459017984 /Users/sairamsayyapureddi/hire_voo_ai-4/credits_dashboard/migrations/0001_initial.py changed, reloading.
+INFO 2025-07-21 18:20:55,573 autoreload 88388 8459017984 Watching for file changes with StatReloader
+INFO 2025-07-21 18:21:55,659 autoreload 88883 8459017984 Watching for file changes with StatReloader
+WARNING 2025-07-22 04:18:52,036 connection 93960 8459017984 No hostname was supplied. Reverting to default 'localhost'
+WARNING 2025-07-22 04:19:34,302 connection 95041 8459017984 No hostname was supplied. Reverting to default 'localhost'
+WARNING 2025-07-22 04:20:12,984 connection 95804 8459017984 No hostname was supplied. Reverting to default 'localhost'
+WARNING 2025-07-22 04:20:53,343 connection 96334 8459017984 No hostname was supplied. Reverting to default 'localhost'
+WARNING 2025-07-22 04:26:03,170 connection 99851 8459017984 No hostname was supplied. Reverting to default 'localhost'

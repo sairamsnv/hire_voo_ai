@@ -1500,15 +1500,6 @@ const SecurityDashboard = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">Two-Factor Authentication</p>
-                      <p className="text-sm text-blue-600/70">Add an extra layer of security</p>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      Enable
-                    </Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
                       <p className="font-medium">Session Timeout</p>
                       <p className="text-sm text-blue-600/70">Auto-logout after inactivity</p>
                     </div>

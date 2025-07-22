@@ -65,6 +65,14 @@ urlpatterns = [
     path('api/payments/create-checkout/', views.create_checkout_session_view, name='create_checkout'),
     path('api/payments/subscription/', views.get_user_subscription_view, name='user_subscription'),
     
+    # Photo upload endpoints
+    path('api/photos/upload/', views.upload_photo_view, name='upload_photo'),
+    path('api/photos/', views.get_user_photos_view, name='user_photos'),
+    path('api/photos/<uuid:photo_id>/', views.get_photo_detail_view, name='photo_detail'),
+    path('api/photos/<uuid:photo_id>/update/', views.update_photo_view, name='update_photo'),
+    path('api/photos/<uuid:photo_id>/delete/', views.delete_photo_view, name='delete_photo'),
+    path('api/photos/<uuid:photo_id>/set-primary/', views.set_primary_photo_view, name='set_primary_photo'),
+    
     # Backward compatibility
     path('api/check-auth/', views.check_auth_view, name='check_auth'),
     path('api/update_profile/', views.update_profile_view, name='update_profile'),

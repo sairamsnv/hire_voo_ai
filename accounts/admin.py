@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent
+from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent, UserPhoto
 
 
 @admin.register(User)
@@ -221,3 +221,36 @@ class SessionSettingsAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('user')
+
+
+@admin.register(UserPhoto)
+class UserPhotoAdmin(admin.ModelAdmin):
+    list_display = ['user', 'photo_type', 'is_primary', 'file_size_mb', 'uploaded_at', 'admin_image_preview']
+    list_filter = ['photo_type', 'is_primary', 'uploaded_at']
+    search_fields = ['user__email', 'user__full_name', 'caption']
+    ordering = ['-uploaded_at']
+    readonly_fields = ['id', 'file_size_mb', 'uploaded_at', 'updated_at', 'admin_image_preview']
+    
+    fieldsets = (
+        ('Photo Information', {
+            'fields': ('id', 'user', 'photo_type', 'image', 'admin_image_preview', 'caption', 'is_primary')
+        }),
+        ('File Details', {
+            'fields': ('file_size', 'file_size_mb', 'file_type', 'width', 'height')
+        }),
+        ('Timestamps', {
+            'fields': ('uploaded_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+    
+    def has_add_permission(self, request):
+        return False  # Photos should be uploaded through the application
+    
+    def admin_image_preview(self, obj):
+        return obj.get_admin_image_preview()
+    admin_image_preview.short_description = 'Preview'
+    admin_image_preview.allow_tags = True

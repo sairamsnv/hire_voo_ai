@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -20,18 +20,45 @@ import NotificationBar from './NotificationBar';
 import ProfileModal from './ProfileModal';
 import SettingsModal from './SettingsModal';
 import { AuthContext } from '@/context/AuthContext';
+import axios from 'axios';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAuthenticated, user, logout } = useContext(AuthContext);
 
   const unreadNotifications = 3;
+
+  // Fetch profile photo when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const fetchProfilePhoto = async () => {
+        try {
+          const response = await axios.get('/api/photos/?photo_type=profile', {
+            withCredentials: true
+          });
+          const primaryPhoto = response.data.find((photo: any) => photo.is_primary);
+          if (primaryPhoto) {
+            setProfilePhoto(primaryPhoto.image_url);
+          } else {
+            setProfilePhoto(null);
+          }
+        } catch (error) {
+          console.error('Error fetching profile photo:', error);
+          setProfilePhoto(null);
+        }
+      };
+      fetchProfilePhoto();
+    } else {
+      setProfilePhoto(null);
+    }
+  }, [isAuthenticated, user]);
 
   const navigationItems = isAuthenticated
     ? [
@@ -161,7 +188,7 @@ const Header = () => {
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full hover:ring-2 hover:ring-blue-500/20 transition-all">
                         <Avatar className="h-10 w-10 sm:h-12 sm:w-12 shadow-luxury ring-2 ring-white/50">
-                          <AvatarImage src="/placeholder.svg" alt="User" />
+                          <AvatarImage src={profilePhoto || "/placeholder.svg"} alt="User" />
                           <AvatarFallback className="gradient-primary text-white font-bold text-sm sm:text-base">
                             {user?.full_name?.[0]?.toUpperCase() || 'U'}
                           </AvatarFallback>

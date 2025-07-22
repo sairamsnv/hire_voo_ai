@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent
+from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent, UserPhoto
 
 
 class LoginSerializer(serializers.Serializer):
@@ -375,6 +375,100 @@ class UserDetailSerializer(serializers.ModelSerializer):
             user_session__user=obj
         ).order_by('-created_at')[:10]
         return SessionActivitySerializer(activities, many=True).data
+
+
+class UserPhotoSerializer(serializers.ModelSerializer):
+    """Serializer for user photo uploads"""
+    image_url = serializers.ReadOnlyField()
+    file_size_mb = serializers.ReadOnlyField()
+    user = UserProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = UserPhoto
+        fields = [
+            'id', 'user', 'photo_type', 'image', 'image_url', 'caption',
+            'is_primary', 'file_size', 'file_size_mb', 'file_type',
+            'width', 'height', 'uploaded_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'image_url', 'file_size_mb', 'uploaded_at', 'updated_at']
+    
+    def validate_image(self, value):
+        """Validate uploaded image"""
+        # Check file size (max 10MB)
+        if value.size > 10 * 1024 * 1024:
+            raise serializers.ValidationError("Image file size must be less than 10MB")
+        
+        # Check file type
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        if value.content_type not in allowed_types:
+            raise serializers.ValidationError("Only JPEG, PNG, GIF, and WebP images are allowed")
+        
+        return value
+    
+    def create(self, validated_data):
+        """Create photo with file metadata"""
+        image = validated_data['image']
+        
+        # Get image dimensions
+        try:
+            from PIL import Image
+            with Image.open(image) as img:
+                validated_data['width'] = img.width
+                validated_data['height'] = img.height
+        except Exception:
+            # If PIL fails, set to None
+            validated_data['width'] = None
+            validated_data['height'] = None
+        
+        # Set file metadata
+        validated_data['file_size'] = image.size
+        validated_data['file_type'] = image.content_type
+        
+        return super().create(validated_data)
+
+
+class UserPhotoUploadSerializer(serializers.ModelSerializer):
+    """Simplified serializer for photo uploads"""
+    image_url = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = UserPhoto
+        fields = ['id', 'photo_type', 'image', 'image_url', 'caption', 'is_primary']
+        read_only_fields = ['id', 'image_url']
+    
+    def validate_image(self, value):
+        """Validate uploaded image"""
+        # Check file size (max 10MB)
+        if value.size > 10 * 1024 * 1024:
+            raise serializers.ValidationError("Image file size must be less than 10MB")
+        
+        # Check file type
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        if value.content_type not in allowed_types:
+            raise serializers.ValidationError("Only JPEG, PNG, GIF, and WebP images are allowed")
+        
+        return value
+    
+    def create(self, validated_data):
+        """Create photo with file metadata"""
+        image = validated_data['image']
+        
+        # Get image dimensions
+        try:
+            from PIL import Image
+            with Image.open(image) as img:
+                validated_data['width'] = img.width
+                validated_data['height'] = img.height
+        except Exception:
+            # If PIL fails, set to None
+            validated_data['width'] = None
+            validated_data['height'] = None
+        
+        # Set file metadata
+        validated_data['file_size'] = image.size
+        validated_data['file_type'] = image.content_type
+        
+        return super().create(validated_data)
 
 
 

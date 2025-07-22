@@ -11,7 +11,7 @@ from .serializers import (
     SessionActivitySerializer, SessionSettingsSerializer, SessionAnalyticsSerializer,
     APIKeySerializer, APIKeyCreateSerializer, APIRequestLogSerializer,
     SecurityEventSerializer, SecurityEventResolveSerializer, SecurityDashboardSerializer,
-    UserManagementSerializer, UserDetailSerializer
+    UserManagementSerializer, UserDetailSerializer, UserPhotoSerializer, UserPhotoUploadSerializer
 )
 import sentry_sdk
 from django.views.decorators.csrf import csrf_exempt
@@ -38,8 +38,10 @@ from .throttles import LoginThrottle, RegisterThrottle, ForgotThrottle
 from rest_framework.decorators import throttle_classes
 from django.contrib.auth.tokens import default_token_generator
 from .services import SessionManagementService
-from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent
+from .models import User, UserSession, SessionActivity, SessionSettings, APIKey, APIRequestLog, SecurityEvent, UserPhoto
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -63,13 +65,9 @@ def get_csrf_token(request):
 @permission_classes([AllowAny])
 @throttle_classes([LoginThrottle])
 def login_view(request):
-    print("Login request received")
     try:
         username = request.data.get("username")
         password = request.data.get("password")
-
-        print("Username:", username)
-        print("Password:", password)
 
         if not username or not password:
             return Response(
@@ -77,73 +75,77 @@ def login_view(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user = authenticate(request, username=username, password=password)
-
-        print("Authenticated user:", user)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                request.session['user_id'] = user.id
-                request.session['is_authenticated'] = True
-                request.session.save()
-                
-                # Create user session for tracking (for ALL users)
-                try:
-                    from .services import SessionManagementService
-                    user_session = SessionManagementService.create_user_session(
-                        request, user, request.session.session_key
-                    )
-                    print(f"✅ Session created for user: {user.email}")
-                except Exception as session_error:
-                    print(f"⚠️ Session creation failed: {session_error}")
-                    # Continue with login even if session tracking fails
-                
-                # Create security event for successful login
-                try:
-                    from .models import SecurityEvent
-                    SecurityEvent.objects.create(
-                        event_type='login_success',
-                        severity='low',
-                        description=f'Successful login for user {user.email}',
-                        ip_address=request.META.get('REMOTE_ADDR'),
-                        user_agent=request.META.get('HTTP_USER_AGENT', ''),
-                        user=user,
-                        request_data={'username': username}
-                    )
-                except Exception as security_error:
-                    print(f"⚠️ Security event creation failed: {security_error}")
-                
-                return Response({
-                        "message": "Logged in successfully",
-                        "user": {
-                            "id": user.id,
-                            "email": user.email,
-                            "full_name": getattr(user, 'full_name', user.email)
-                        }
-                    }, status=status.HTTP_200_OK)
-
+        # Explicitly use default database for authentication
+        from .models import User
+        from django.contrib.auth.backends import ModelBackend
+        
+        try:
+            user = User.objects.using('default').get(email=username)
+            if user.check_password(password):
+                if user.is_active:
+                    # Specify the authentication backend
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    request.session['user_id'] = user.id
+                    request.session['is_authenticated'] = True
+                    request.session.save()
+                    
+                    # Create basic user session for tracking (simplified)
+                    try:
+                        from .models import UserSession
+                        # Check if session already exists
+                        existing_session = UserSession.objects.filter(
+                            session_key=request.session.session_key
+                        ).first()
+                        
+                        if existing_session:
+                            # Update existing session
+                            existing_session.user = user
+                            existing_session.ip_address = request.META.get('REMOTE_ADDR')
+                            existing_session.user_agent = request.META.get('HTTP_USER_AGENT', '')
+                            existing_session.is_active = True
+                            existing_session.expires_at = timezone.now() + timedelta(days=14)
+                            existing_session.save()
+                        else:
+                            # Create new session
+                            user_session = UserSession.objects.create(
+                                user=user,
+                                session_key=request.session.session_key,
+                                ip_address=request.META.get('REMOTE_ADDR'),
+                                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                                device_type='desktop',  # Default
+                                browser='Unknown',
+                                os='Unknown',
+                                is_active=True,
+                                expires_at=timezone.now() + timedelta(days=14)  # 2 weeks
+                            )
+                    except Exception as session_error:
+                        # Continue with login even if session tracking fails
+                        print(f"Session creation error: {session_error}")
+                        pass
+                    
+                    return Response({
+                            "message": "Logged in successfully",
+                            "user": {
+                                "id": user.id,
+                                "email": user.email,
+                                "full_name": getattr(user, 'full_name', user.email),
+                                "is_staff": user.is_staff,
+                                "is_superuser": user.is_superuser
+                            }
+                        }, status=status.HTTP_200_OK)
+                else:
+                    return Response({"detail": "Account is disabled"}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({"detail": "Account is disabled"}, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            # Create security event for failed login attempt
-            try:
-                from .models import SecurityEvent
-                SecurityEvent.objects.create(
-                    event_type='login_failed',
-                    severity='medium',
-                    description=f'Failed login attempt for username: {username}',
-                    ip_address=request.META.get('REMOTE_ADDR'),
-                    user_agent=request.META.get('HTTP_USER_AGENT', ''),
-                    request_data={'username': username}
-                )
-            except Exception as security_error:
-                print(f"⚠️ Security event creation failed: {security_error}")
-            
+                # Invalid password
+                return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
+            # User not found
             return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
     except Exception as e:
-        print("Login error:", str(e))  # <-- LOG THE ERROR
+        import traceback
+        print(f"Login error: {e}")
+        print(f"Traceback: {traceback.format_exc()}")
         return Response({"detail": f"Login failed: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -153,7 +155,6 @@ def logout_view(request):
     try:
         if request.user.is_authenticated:
             user_email = request.user.email
-            print("Logout request received from:", user_email)
             
             # Terminate user session for tracking
             try:
@@ -163,13 +164,11 @@ def logout_view(request):
                     user_session = SessionManagementService.get_session_by_key(session_key)
                     if user_session:
                         SessionManagementService.terminate_session(user_session, 'user_logout')
-                        print(f"✅ Session terminated for user: {user_email}")
             except Exception as session_error:
-                print(f"⚠️ Session termination failed: {session_error}")
+                pass
             
             logout(request)
             request.session.flush()
-            print("Logout successful for:", user_email)
             
             # Create security event for logout
             try:
@@ -183,15 +182,13 @@ def logout_view(request):
                     user=request.user
                 )
             except Exception as security_error:
-                print(f"⚠️ Security event creation failed: {security_error}")
+                pass
         else:
-            print("Logout request received from anonymous user")
             # Clear any remaining session data
             request.session.flush()
         
         return Response({'message': 'Logged out successfully.'})
     except Exception as e:
-        print("Logout error:", str(e))
         return Response(
             {'error': 'Logout failed'}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -232,10 +229,10 @@ def send_verification_email(user, request):
 @throttle_classes([RegisterThrottle])
 def register_view(request):
     try:
-        print("📥 Incoming data:", request.data)
         email = request.data.get('email')
         from .models import User
-        existing_user = User.objects.filter(email=email).first()
+        # Explicitly use default database for accounts
+        existing_user = User.objects.using('default').filter(email=email).first()
         if existing_user:
             if not existing_user.is_active:
                 send_verification_email(existing_user, request)
@@ -251,28 +248,61 @@ def register_view(request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save(is_active=False)  # Set inactive until verified
-            print("✅ User created:", user.email)
             send_verification_email(user, request)
             return Response(
                 {'message': 'Account created successfully. Please check your email to verify your account.'}, 
                 status=status.HTTP_201_CREATED
             )
         else:
-            print("❌ Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        import traceback
-        traceback.print_exc()
+        print(f"Registration error: {e}")  # Keep debug print
         return Response(
-            {'error': 'Registration failed. Please try again.'}, 
+            {'error': f'Registration failed: {str(e)}'}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def session_check_view(request):
     """Check if user is authenticated and return session info"""
     try:
+        print(f"Session check - User authenticated: {request.user.is_authenticated}")
+        print(f"Session check - User: {request.user}")
+        print(f"Session check - Session key: {request.session.session_key}")
+        print(f"Session check - Session data: {dict(request.session)}")
+        
+        # Check if session exists in database
+        from django.contrib.sessions.models import Session
+        if request.session.session_key:
+            try:
+                session_obj = Session.objects.get(session_key=request.session.session_key)
+                session_data = session_obj.get_decoded()
+                print(f"Session check - Database session data: {session_data}")
+                
+                # If Django's authentication failed but session has user data, manually load user
+                if not request.user.is_authenticated and '_auth_user_id' in session_data:
+                    from .models import User
+                    try:
+                        user = User.objects.using('default').get(id=session_data['_auth_user_id'])
+                        print(f"Session check - Manually loaded user: {user}")
+                        
+                        # Return authenticated response
+                        serializer = UserProfileSerializer(user)
+                        return Response({
+                            "isAuthenticated": True,
+                            "user": serializer.data
+                        })
+                    except User.DoesNotExist:
+                        print(f"Session check - User not found in database")
+                        pass
+                        
+            except Session.DoesNotExist:
+                print(f"Session check - Session not found in database")
+        else:
+            print(f"Session check - No session key")
+        
         if request.user.is_authenticated:
             serializer = UserProfileSerializer(request.user)
             return Response({
@@ -285,6 +315,9 @@ def session_check_view(request):
                 "user": None
             })
     except Exception as e:
+        print(f"Session check error: {e}")
+        import traceback
+        print(f"Session check traceback: {traceback.format_exc()}")
         return Response(
             {"error": "Session check failed"}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -301,7 +334,6 @@ def get_profile_view(request):
             "user": serializer.data
         })
     except Exception as e:
-        print("Profile fetch failed:", str(e))
         return Response({
             "isAuthenticated": False,
             "error": "Failed to fetch profile."
@@ -338,23 +370,21 @@ def verify_email_view(request):
     uidb64 = request.GET.get('uid')
     token = request.GET.get('token')
     if not uidb64 or not token:
-        return Response({'error': 'Invalid verification link.'}, status=400)
+        return HttpResponseRedirect('/login?error=invalid_link')
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         from .models import User
-        user = User.objects.get(pk=uid)
+        user = User.objects.using('default').get(pk=uid)
     except Exception:
-        return Response({'error': 'Invalid or expired link.'}, status=400)
+        return HttpResponseRedirect('/login?error=invalid_link')
     if user.is_active:
-        # Redirect to login with verified=1 if already active
         return HttpResponseRedirect('/login?verified=1')
     if token_generator.check_token(user, token):
         user.is_active = True
-        user.save()
-        # Redirect to login with verified=1 after successful activation
+        user.save(using='default')
         return HttpResponseRedirect('/login?verified=1')
     else:
-        return Response({'error': 'Invalid or expired token.'}, status=400)
+        return HttpResponseRedirect('/login?error=invalid_token')
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -584,6 +614,35 @@ def session_settings_view(request):
     except Exception as e:
         return Response(
             {"error": "Failed to manage session settings"}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@csrf_protect
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+def user_settings_view(request):
+    """Get or update user settings and preferences"""
+    try:
+        from .models import UserSettings
+        settings, created = UserSettings.objects.get_or_create(user=request.user)
+        
+        if request.method == 'GET':
+            from .serializers import UserSettingsSerializer
+            serializer = UserSettingsSerializer(settings)
+            return Response(serializer.data)
+        
+        elif request.method == 'PUT':
+            from .serializers import UserSettingsSerializer
+            serializer = UserSettingsSerializer(settings, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    except Exception as e:
+        return Response(
+            {"error": "Failed to manage user settings"}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
@@ -1481,5 +1540,316 @@ def admin_user_analytics_view(request):
             {'error': f'Failed to get user analytics: {str(e)}'}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+# Photo Upload Views
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def upload_photo_view(request):
+    """Upload a new photo for the authenticated user"""
+    try:
+        # Get the user and ensure they're authenticated
+        user = request.user
+        if not user.is_authenticated:
+            return Response(
+                {'error': 'Authentication required'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        
+        # Validate request data
+        if 'image' not in request.FILES:
+            return Response(
+                {'error': 'No image file provided'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Prepare data for serializer
+        data = {
+            'user': user.id,
+            'image': request.FILES['image'],
+            'photo_type': request.data.get('photo_type', 'profile'),
+            'caption': request.data.get('caption', ''),
+            'is_primary': request.data.get('is_primary', False)
+        }
+        
+        # Validate and create photo
+        serializer = UserPhotoUploadSerializer(data=data)
+        if serializer.is_valid():
+            photo = serializer.save(user=user)
+            
+            # Return the created photo
+            response_serializer = UserPhotoSerializer(photo)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to upload photo'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_photos_view(request):
+    """Get all photos for the authenticated user"""
+    try:
+        user = request.user
+        photo_type = request.GET.get('photo_type', None)
+        
+        # Filter photos by type if specified
+        if photo_type:
+            photos = UserPhoto.objects.filter(user=user, photo_type=photo_type)
+        else:
+            photos = UserPhoto.objects.filter(user=user)
+        
+        # Order by primary first, then by upload date
+        photos = photos.order_by('-is_primary', '-uploaded_at')
+        
+        serializer = UserPhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to get photos'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_photo_detail_view(request, photo_id):
+    """Get details of a specific photo"""
+    try:
+        user = request.user
+        
+        # Get the photo
+        try:
+            photo = UserPhoto.objects.get(id=photo_id, user=user)
+        except UserPhoto.DoesNotExist:
+            return Response(
+                {'error': 'Photo not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = UserPhotoSerializer(photo)
+        return Response(serializer.data)
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to get photo details'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_photo_view(request, photo_id):
+    """Update photo details (caption, primary status)"""
+    try:
+        user = request.user
+        
+        # Get the photo
+        try:
+            photo = UserPhoto.objects.get(id=photo_id, user=user)
+        except UserPhoto.DoesNotExist:
+            return Response(
+                {'error': 'Photo not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Update allowed fields
+        allowed_fields = ['caption', 'is_primary']
+        
+        for field in allowed_fields:
+            if field in request.data:
+                setattr(photo, field, request.data[field])
+        
+        photo.save()
+        
+        serializer = UserPhotoSerializer(photo)
+        return Response(serializer.data)
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to update photo'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_photo_view(request, photo_id):
+    """Delete a photo"""
+    try:
+        user = request.user
+        
+        # Get the photo
+        try:
+            photo = UserPhoto.objects.get(id=photo_id, user=user)
+        except UserPhoto.DoesNotExist:
+            return Response(
+                {'error': 'Photo not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Delete the photo (this will also delete the file)
+        photo.delete()
+        
+        return Response({'message': 'Photo deleted successfully'})
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to delete photo'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def set_primary_photo_view(request, photo_id):
+    """Set a photo as primary for its type"""
+    try:
+        user = request.user
+        
+        # Get the photo
+        try:
+            photo = UserPhoto.objects.get(id=photo_id, user=user)
+        except UserPhoto.DoesNotExist:
+            return Response(
+                {'error': 'Photo not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Set as primary (this will automatically unset others of the same type)
+        photo.is_primary = True
+        photo.save()
+        
+        serializer = UserPhotoSerializer(photo)
+        return Response(serializer.data)
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to set primary photo'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_account_view(request):
+    """Delete user's own account"""
+    try:
+        password = request.data.get('password')
+        
+        if not password:
+            return Response(
+                {'error': 'Password is required to delete account'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Verify password
+        if not request.user.check_password(password):
+            return Response(
+                {'error': 'Incorrect password'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Get user email before deletion for logging
+        user_email = request.user.email
+        
+        # Delete user (this will cascade delete related data)
+        request.user.delete()
+        
+        # Logout the user
+        logout(request)
+        
+        # Create security event (before user is deleted)
+        try:
+            from .models import SecurityEvent
+            SecurityEvent.objects.create(
+                event_type='account_deleted',
+                severity='medium',
+                description=f'Account deleted for user {user_email}',
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                request_data={'user_email': user_email}
+            )
+        except Exception:
+            pass
+        
+        return Response({'message': 'Account deleted successfully'})
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to delete account'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password_view(request):
+    """Change password for authenticated user"""
+    try:
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+        
+        if not all([current_password, new_password, confirm_password]):
+            return Response(
+                {'error': 'All password fields are required'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Check if new passwords match
+        if new_password != confirm_password:
+            return Response(
+                {'error': 'New passwords do not match'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate current password
+        if not request.user.check_password(current_password):
+            return Response(
+                {'error': 'Current password is incorrect'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate new password strength
+        if len(new_password) < 8:
+            return Response(
+                {'error': 'New password must be at least 8 characters long'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Change password
+        request.user.set_password(new_password)
+        request.user.save()
+        
+        # Create security event
+        try:
+            from .models import SecurityEvent
+            SecurityEvent.objects.create(
+                event_type='password_change',
+                severity='low',
+                description=f'Password changed for user {request.user.email}',
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                user=request.user
+            )
+        except Exception:
+            pass
+        
+        return Response({'message': 'Password changed successfully'})
+        
+    except Exception as e:
+        return Response(
+            {'error': 'Failed to change password'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+# 2FA views removed - will be added later
 
 
